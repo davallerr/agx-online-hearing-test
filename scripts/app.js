@@ -1,6 +1,6 @@
-var importContent = document.querySelector('link[rel="import"]').import;
+var importHTML = document.querySelector('link[id="html-templates"]').import;
 
-var el = importContent.querySelector('.child1-container');
+var el = importHTML.querySelector('.child1-container');
 
 console.log(el);
 
