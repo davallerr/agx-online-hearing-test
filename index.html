@@ -6,12 +6,8 @@
     <title>AGX Online Hearing Test</title>
 
     <script>
-    function handleLoad(e) {
-      console.log('Loaded import: ' + e.target.href);
-    }
-    function handleError(e) {
-      console.log('Error loading import: ' + e.target.href);
-    }
+    function handleLoad(e) { console.log('Loaded import: ' + e.target.href); }
+    function handleError(e) { console.log('Error loading import: ' + e.target.href); }
     </script>
 
     <link rel="import" id="html-templates" href="./html/html-templates.html">
@@ -20,19 +16,16 @@
 
   <body>
 
-
-    <h1>Givin' it a shot</h1>
-
+    <div class="header">
+      <h1 class="header-text">AGX<sup>&reg;</sup> ONLINE HEARING TEST</h1>
+    </div>
 
     <div class="parent-container">
 
     </div>
 
-
   </body>
 
 
-
   <script src="./scripts/app.js"></script>
-
-</div>
+</html>

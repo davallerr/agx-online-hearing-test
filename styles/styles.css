@@ -1,3 +1,28 @@
+/* FONTS
+arno pro
+open sans
+*/
+
+/* COLORS
+purple:     #874fb2
+teal:       #008aab
+ag purple:  #532d6d
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
+
 body {
-  background: #aaa;
+  background: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #532d6d;
+  font-family: 'Noto Serif';
+  text-transform: uppercase;
+}
+
+sup { font-size: 50%; }
+
+.btn-submit {
+  background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
 }
