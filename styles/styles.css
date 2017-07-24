@@ -11,6 +11,11 @@ ag purple:  #532d6d
 
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
 
+
+/*********************************
+GLOBAL STYLES
+*********************************/
+
 body {
   background: #fff;
 }
@@ -18,11 +23,141 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: #532d6d;
   font-family: 'Noto Serif';
+  font-weight: 400;
   text-transform: uppercase;
 }
 
 sup { font-size: 50%; }
 
+
+/*********************************
+LAYOUT CLASSES
+*********************************/
+
+.quiz-window {
+  background: #fff;
+  box-shadow: .1rem .1rem 1rem #666;
+  height: 25rem;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 40rem;
+}
+
+.header {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.agx-hearing-logo {
+  height: auto;
+}
+
+.logo-intro {
+  margin: 2rem;
+  width: 20rem;
+}
+
+.logo-stages {
+  margin: 0;
+  width: 10rem;
+}
+
+.lead-text {
+  font-family: 'Open Sans';
+  font-size: 1.2em;
+  margin: .5rem 2rem;
+  text-align: center;
+}
+
+.quiz-body {
+  margin: 1rem auto;
+}
+
+.steps {
+  font-family: 'Open Sans';
+  height: 2rem;
+  margin: 1rem auto;
+}
+
+[class*='step-'] {
+  float: left;
+  padding: .5rem 0;
+  width: 25%;
+}
+
+.active-step {
+  background: #008aab;
+  color: #fff;
+}
+
+.inactive-step {
+  background: #B6D8E4;
+  color: #666;
+}
+
+[class*='prog-bar-'] {
+  height: .5rem;
+  margin: .2rem auto 2rem auto;
+  text-align: center;
+}
+
+.prog-bubble {
+  background: #B9AAC8;
+  border-radius: 100%;
+  display: inline-block;
+  height: .5rem;
+  margin: 0 .3rem;
+  width: .5rem;
+}
+
+.prog-current {
+  background: #532d6d;
+}
+
+.btns-yn {
+  margin: .5rem auto;
+  text-align: center;
+}
+
+
+/*********************************
+BUTTON CLASSES
+*********************************/
+
 .btn-submit {
   background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
+  border: none;
+  border-radius: 10rem;
+  color: #fff;
+  display: block;
+  font-size: 1.2em;
+  font-weight: 200;
+  letter-spacing: .05em;
+  margin: 1rem auto;
+  outline: none;
+  padding: .5rem 1.5rem;
+}
+
+[class*='btn-yn-'] {
+  border: none;
+  border-radius: 10rem;
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 200;
+  letter-spacing: .05em;
+  margin: 2rem .5rem;
+  outline: none;
+  padding: .5rem 1.5rem;
+}
+
+.btn-yn-yes {
+  background: #532d6d;
+  color: #fff;
+}
+
+.btn-yn-no {
+  background: #B9AAC8;
+  color: #666;
 }
