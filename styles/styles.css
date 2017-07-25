@@ -116,12 +116,16 @@ LAYOUT CLASSES
 }
 
 .quiz-body {
-  margin: 1rem auto;
+  margin: 3rem auto;
 }
 
 .btns-yn {
+  bottom: 10%;
+  left: 50%;
   margin: .5rem auto;
+  position: absolute;
   text-align: center;
+  transform: translate(-50%, -50%);
 }
 
 
@@ -133,14 +137,18 @@ BUTTON CLASSES
   background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
   border: none;
   border-radius: 10rem;
+  bottom: 10%;
   color: #fff;
   display: block;
   font-size: 1.2em;
   font-weight: 200;
+  left: 50%;
   letter-spacing: .05em;
   margin: 1rem auto;
   outline: none;
   padding: .5rem 1.5rem;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 .btn-submit:hover {
@@ -156,7 +164,8 @@ BUTTON CLASSES
   letter-spacing: .05em;
   margin: 2rem .5rem;
   outline: none;
-  padding: .5rem 1.5rem;
+  padding: .5rem 2rem;
+  width: 8rem;
 }
 
 .btn-yn-yes {
