@@ -19,15 +19,43 @@ random thought, because of those things I don't think any kind of 'back' functio
 // DATA CONTROLLER
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-var quizController = (function() {
+var dataController = (function() {
 
-  var data = {
+  var quizQuestions = {
+    q1: 'Question 1 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
+    q2: 'Question 2 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
+    q3: 'Question 3 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
+    q4: 'Question 4 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
+    q5: 'Question 5 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
+    q6: 'Question 6 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.'
+  };
 
+  var results = {
+    questions: {
+
+    },
+    soundSettings: {
+
+    },
+    toneTest: {
+
+    },
+    speechTest: {
+
+    }
   };
 
 
   // RETURNED PUBLIC FUNCTIONS
   return {
+
+    setQuizQuestion: function(q) {
+      return quizQuestions[q];
+    },
+
+    getResults: function() {
+      return results;
+    }
 
   };
 
@@ -49,11 +77,11 @@ var UIController = (function() {
     btnSubmit:      importHTML.querySelector('.btn-submit'),
     leadText:       importHTML.querySelector('.lead-text'),
     headerText:     importHTML.querySelector('.header-text'),
-    progBar2:        importHTML.querySelector('.prog-bar-2'),
-    progBar3:        importHTML.querySelector('.prog-bar-3'),
-    progBar4:        importHTML.querySelector('.prog-bar-4'),
-    progBar5:        importHTML.querySelector('.prog-bar-5'),
-    progBar6:        importHTML.querySelector('.prog-bar-6'),
+    progBar2:       importHTML.querySelector('.prog-bar-2'),
+    progBar3:       importHTML.querySelector('.prog-bar-3'),
+    progBar4:       importHTML.querySelector('.prog-bar-4'),
+    progBar5:       importHTML.querySelector('.prog-bar-5'),
+    progBar6:       importHTML.querySelector('.prog-bar-6'),
     progBubble:     importHTML.querySelector('.prog-bubble'),
     steps:          importHTML.querySelector('.steps')
   }
@@ -103,7 +131,7 @@ var UIController = (function() {
 // APP CONTROLLER
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-var controller = (function(quizCtrl, UICtrl) {
+var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStageIntro = function() {
     // add AGX Hearing logo
@@ -121,10 +149,15 @@ var controller = (function(quizCtrl, UICtrl) {
     // add start test button
     UICtrl.addImportBlock('btnSubmit', '.quiz-body', 'beforeend');
     UICtrl.setInnerHtml('.btn-submit', 'Take the Test');
-    UICtrl.addListener('.btn-submit', 'click', ctrlSetStage1);
+    UICtrl.addListener('.btn-submit', 'click', ctrlSetStageQuiz);
   };
 
-  var ctrlSetStage1 = function() {
+  var ctrlSetStageQuiz = function() {
+    var dataResults, q;
+
+    dataResults = dataCtrl.getResults();
+    q = Object.keys(dataResults.questions).length + 1;
+
     // remove existing window content
     UICtrl.setInnerHtml('.header', '');
     UICtrl.setInnerHtml('.quiz-body', '');
@@ -146,13 +179,13 @@ var controller = (function(quizCtrl, UICtrl) {
     UICtrl.addImportBlock('progBar6', '.header', 'beforeend');
 
     // set current progress bubble
-    UICtrl.addClass('.prog-bubble', 0, 'prog-current');
+    UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
 
-    // add question lead text
+    // add question text
     UICtrl.addImportBlock('leadText', '.quiz-body', 'afterbegin');
-    UICtrl.setInnerHtml('.lead-text', 'Question 1 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.')
+    UICtrl.setInnerHtml('.lead-text', dataCtrl.setQuizQuestion('q' + q));
 
-    // add yes/no buttons
+    // add yes/no buttons and set listeners
     UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
   };
 
@@ -167,7 +200,7 @@ var controller = (function(quizCtrl, UICtrl) {
 
   };
 
-})(quizController, UIController);
+})(dataController, UIController);
 
 
 ///////////////////////////////////////////////////////////////////////////////
