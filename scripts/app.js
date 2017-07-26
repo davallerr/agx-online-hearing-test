@@ -53,8 +53,8 @@ var dataController = (function() {
       return Object.keys(results.questions).length + 1;
     },
 
-    setQuizResponse: function(q, ans) {
-      results.questions['q' + q] = ans;
+    setQuizResponse: function(q, response) {
+      results.questions['q' + q] = response;
     },
 
     testing: function() {
@@ -87,6 +87,7 @@ var UIController = (function() {
     progBar5:       importHTML.querySelector('.prog-bar-5'),
     progBar6:       importHTML.querySelector('.prog-bar-6'),
     progBubble:     importHTML.querySelector('.prog-bubble'),
+    stageIntro:     importHTML.querySelector('.stage-intro'),
     stageQuiz:      importHTML.querySelector('.stage-quiz'),
     steps:          importHTML.querySelector('.steps')
   }
@@ -134,6 +135,10 @@ var UIController = (function() {
       document.querySelector(destinationString).innerHTML = newText;
     },
 
+    setStepIntro: function() {
+      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
+    },
+
     setStepQuiz: function() {
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageQuiz);
     },
@@ -161,29 +166,19 @@ var UIController = (function() {
 var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepIntro = function() {
-    // add AGX Hearing logo
-    UICtrl.addImportBlock('agxHearingLogo', '.header', 'afterbegin');
-    UICtrl.addClass('.agx-hearing-logo', 0, 'logo-intro');
-
-    // add header text
-    UICtrl.addImportBlock('headerText', '.header', 'beforeend');
-    UICtrl.setInnerHtml('.header-text', 'AGX<sup>&reg;</sup> Online Hearing Test');
-
-    // add lead text
-    UICtrl.addImportBlock('leadText', '.quiz-body', 'afterbegin');
-    UICtrl.setInnerHtml('.lead-text', 'Some intro text for the quizzy quiz');
+    // clear window and add intro step elements to DOM
+    UICtrl.setInnerHtml('.quiz-window', '');
+    UICtrl.setStepIntro();
 
     // add start test button
-    UICtrl.addImportBlock('btnSubmit', '.quiz-body', 'beforeend');
+    UICtrl.addImportBlock('btnSubmit', '.intro-body', 'beforeend');
     UICtrl.setInnerHtml('.btn-submit', 'Take the Test');
     UICtrl.addListener('.btn-submit', 'click', ctrlSetStepQuiz);
   };
 
   var ctrlSetStepQuiz = function() {
-    // clear window
+    // clear window and add quiz step elements to DOM
     UICtrl.setInnerHtml('.quiz-window', '');
-
-    // add quiz step elements to DOM
     UICtrl.setStepQuiz();
 
     // set to Step 1 - Quiz
@@ -191,30 +186,41 @@ var controller = (function(dataCtrl, UICtrl) {
 
     // add yes/no buttons and set listeners
     UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
-    UICtrl.addListener('.btns-yn', 'click', UICtrl.getQuizResponse);
+    UICtrl.addListener('.btns-yn', 'click', ctrlQuizResponse);
 
     // go to questions
     ctrlQuizNextQ();
   };
 
+  var ctrlQuizResponse = function(event) {
+    // get quiz question response from y/n buttons
+    var q, response;
+
+    q = dataCtrl.getQuizNum();
+    response = UICtrl.getQuizResponse(event);
+
+    dataCtrl.setQuizResponse(q, response);
+
+    ctrlQuizNextQ();
+  };
+
   var ctrlQuizNextQ = function() {
+    // check quiz question number and either set next question or finish quiz
     var q;
 
-    // set quiz question number
     q = dataCtrl.getQuizNum();
 
     if (q <= 6) {
-      // set current progress bubble
+      // set current progress bubble and question text
       UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
-
-      // add question text
       document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
     } else {
-      //ctrlSetStepSound();
+      document.querySelector('.btns-yn').removeEventListener('click', ctrlQuizResponse);
+      //ctrlSetStepCalib();
     }
   };
 
-  var ctrlSetStepSound = function() {
+  var ctrlSetStepCalib = function() {
 
   };
 
