@@ -67,7 +67,7 @@ LAYOUT CLASSES
   width: 10rem;
 }
 
-.lead-text {
+.lead-text, .quiz-question-text {
   font-family: 'Open Sans';
   font-size: 1.2em;
   margin: .5rem 2rem;

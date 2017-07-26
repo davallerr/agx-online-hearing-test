@@ -50,7 +50,6 @@ var dataController = (function() {
     },
 
     getQuizNum: function() {
-      console.log(Object.keys(results.questions).length + 1);
       return Object.keys(results.questions).length + 1;
     },
 
@@ -88,6 +87,7 @@ var UIController = (function() {
     progBar5:       importHTML.querySelector('.prog-bar-5'),
     progBar6:       importHTML.querySelector('.prog-bar-6'),
     progBubble:     importHTML.querySelector('.prog-bubble'),
+    stageQuiz:      importHTML.querySelector('.stage-quiz'),
     steps:          importHTML.querySelector('.steps')
   }
 
@@ -121,9 +121,21 @@ var UIController = (function() {
       return DOMStrings;
     },
 
+    getQuizResponse: function(event) {
+      if (event.target.className === 'btn-yn-yes') {
+        return true;
+      } else if (event.target.className === 'btn-yn-no') {
+        return false;
+      }
+    },
+
     setInnerHtml(destinationString, newText)  {
       document.querySelector(destinationString).innerHTML = '';
       document.querySelector(destinationString).innerHTML = newText;
+    },
+
+    setStepQuiz: function() {
+      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageQuiz);
     },
 
     setSteps(step) {
@@ -168,55 +180,42 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepQuiz = function() {
+    // clear window
+    UICtrl.setInnerHtml('.quiz-window', '');
+
+    // add quiz step elements to DOM
+    UICtrl.setStepQuiz();
+
+    // set to Step 1 - Quiz
+    UICtrl.setSteps(1);
+
+    // add yes/no buttons and set listeners
+    UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
+    UICtrl.addListener('.btns-yn', 'click', UICtrl.getQuizResponse);
+
+    // go to questions
+    ctrlQuizNextQ();
+  };
+
+  var ctrlQuizNextQ = function() {
     var q;
 
     // set quiz question number
     q = dataCtrl.getQuizNum();
 
     if (q <= 6) {
-      // remove existing window content
-      UICtrl.setInnerHtml('.header', '');
-      UICtrl.setInnerHtml('.quiz-body', '');
-
-      // add AGX Hearing logo as small header
-      UICtrl.addImportBlock('agxHearingLogo', '.header', 'afterbegin');
-      UICtrl.addClass('.agx-hearing-logo', 0, 'logo-stages');
-
-      // add Steps bar
-      UICtrl.addImportBlock('steps', '.header', 'beforeend');
-
-      // set to Step 1 - Quiz
-      UICtrl.setSteps(1);
-
-      // add progress bar and bubbles
-      UICtrl.addImportBlock('progBar6', '.header', 'beforeend');
-
       // set current progress bubble
       UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
 
       // add question text
-      UICtrl.addImportBlock('leadText', '.quiz-body', 'afterbegin');
-      UICtrl.setInnerHtml('.lead-text', dataCtrl.setQuizQuestion('q' + q));
-
-      // add yes/no buttons and set listeners
-      UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
-
-      UICtrl.addListener('.btn-yn-yes', 'click', function() {
-        dataCtrl.setQuizResponse(q, 'yes');
-        ctrlSetStepQuiz();
-      });
-
-      UICtrl.addListener('.btn-yn-no', 'click', function() {
-        dataCtrl.setQuizResponse(q, 'no');
-        ctrlSetStepQuiz();
-      });
+      document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
     } else {
       //ctrlSetStepSound();
-    };
-
-    var ctrlSetStepSound = function() {
-
     }
+  };
+
+  var ctrlSetStepSound = function() {
+
   };
 
 
