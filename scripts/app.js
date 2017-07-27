@@ -31,8 +31,8 @@ var dataController = (function() {
   };
 
   var results = {
-    questions: {},
-    soundSettings: {},
+    quiz: {},
+    calibration: {},
     toneTest: {},
     speechTest: {}
   };
@@ -49,12 +49,12 @@ var dataController = (function() {
       return results;
     },
 
-    getQuizNum: function() {
-      return Object.keys(results.questions).length + 1;
+    getResponseNum: function(stage) {
+      return Object.keys(results[stage]).length + 1;
     },
 
     setQuizResponse: function(q, response) {
-      results.questions['q' + q] = response;
+      results.quiz['q' + q] = response;
     },
 
     testing: function() {
@@ -87,6 +87,7 @@ var UIController = (function() {
     progBar5:       importHTML.querySelector('.prog-bar-5'),
     progBar6:       importHTML.querySelector('.prog-bar-6'),
     progBubble:     importHTML.querySelector('.prog-bubble'),
+    stageCalib:     importHTML.querySelector('.stage-calib'),
     stageIntro:     importHTML.querySelector('.stage-intro'),
     stageQuiz:      importHTML.querySelector('.stage-quiz'),
     steps:          importHTML.querySelector('.steps')
@@ -135,15 +136,10 @@ var UIController = (function() {
       document.querySelector(destinationString).innerHTML = newText;
     },
 
-    setStepIntro: function() {
-      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
-    },
+    setStage: function(el, step) {
+      document.querySelector('.quiz-window').innerHTML = '';
+      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements[el]);
 
-    setStepQuiz: function() {
-      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageQuiz);
-    },
-
-    setSteps(step) {
       document.querySelector('.step-' + step).className += ' ' + 'active-step';
 
       for (var i=1; i<=4; i++) {
@@ -151,6 +147,10 @@ var UIController = (function() {
           document.querySelector('.step-' + i).className += ' ' + 'inactive-step';
         }
       }
+    },
+
+    setStageIntro: function() {
+      document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
     }
 
   };
@@ -168,21 +168,15 @@ var controller = (function(dataCtrl, UICtrl) {
   var ctrlSetStepIntro = function() {
     // clear window and add intro step elements to DOM
     UICtrl.setInnerHtml('.quiz-window', '');
-    UICtrl.setStepIntro();
+    UICtrl.setStageIntro();
 
-    // add start test button
-    UICtrl.addImportBlock('btnSubmit', '.intro-body', 'beforeend');
-    UICtrl.setInnerHtml('.btn-submit', 'Take the Test');
-    UICtrl.addListener('.btn-submit', 'click', ctrlSetStepQuiz);
+    // add listener to start button
+    document.querySelector('.btn-submit-intro').addEventListener('click', ctrlSetStepQuiz);
   };
 
   var ctrlSetStepQuiz = function() {
-    // clear window and add quiz step elements to DOM
-    UICtrl.setInnerHtml('.quiz-window', '');
-    UICtrl.setStepQuiz();
-
-    // set to Step 1 - Quiz
-    UICtrl.setSteps(1);
+    // set stage to quiz
+    UICtrl.setStage('stageQuiz', 1);
 
     // add yes/no buttons and set listeners
     UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
@@ -192,11 +186,27 @@ var controller = (function(dataCtrl, UICtrl) {
     ctrlQuizNextQ();
   };
 
+  var ctrlQuizNextQ = function() {
+    // check quiz question number and either set next question or finish quiz
+    var q;
+
+    q = dataCtrl.getResponseNum('quiz');
+
+    if (q < 7) {
+      // set current progress bubble and question text
+      UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
+      document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
+    } else {
+      document.querySelector('.btns-yn').removeEventListener('click', ctrlQuizResponse);
+      ctrlSetStepCalib();
+    }
+  };
+
   var ctrlQuizResponse = function(event) {
     // get quiz question response from y/n buttons
     var q, response;
 
-    q = dataCtrl.getQuizNum();
+    q = dataCtrl.getResponseNum('quiz');
     response = UICtrl.getQuizResponse(event);
 
     dataCtrl.setQuizResponse(q, response);
@@ -204,24 +214,35 @@ var controller = (function(dataCtrl, UICtrl) {
     ctrlQuizNextQ();
   };
 
-  var ctrlQuizNextQ = function() {
-    // check quiz question number and either set next question or finish quiz
+  var ctrlSetStepCalib = function() {
+    // set stage to calibration
+    UICtrl.setStage('stageCalib', 2);
+
+    // add listener to set volume button
+    document.querySelector('.btn-submit-calib').addEventListener('click', ctrlCalibResponse);
+
+    // go to tone set function
+    ctrlCalibNext();
+  };
+
+  var ctrlCalibNext = function() {
     var q;
 
-    q = dataCtrl.getQuizNum();
+    q = dataCtrl.getResponseNum('calibration');
 
-    if (q <= 6) {
-      // set current progress bubble and question text
+    if (q < 4) {
+      // set current progress bubble and play tone
       UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
-      document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
+      ////////////////////////////
+      // SOUNDS?! ///////////////////////////////
+      //////////////////////////////////
     } else {
-      document.querySelector('.btns-yn').removeEventListener('click', ctrlQuizResponse);
-      //ctrlSetStepCalib();
+      ctrlSetStepToneTest();
     }
   };
 
-  var ctrlSetStepCalib = function() {
-
+  var ctrlCalibResponse = function() {
+    // do things
   };
 
 

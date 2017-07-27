@@ -8,8 +8,10 @@ purple:     #874fb2
 --shade:    #7a47a1
 teal:       #008aab
 --shade:    #00738f
+--tint:     #b6d8e4
 ag purple:  #532d6d
 --shade:    #48275e
+--tint:     #b9aac8
 */
 
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
@@ -20,7 +22,7 @@ GLOBAL STYLES
 *********************************/
 
 body {
-  background: #fff;
+  font-family: 'Open Sans';
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -34,7 +36,7 @@ sup { font-size: 50%; }
 
 
 /*********************************
-LAYOUT CLASSES
+LAYOUT ELEMENTS
 *********************************/
 
 .quiz-window {
@@ -68,14 +70,12 @@ LAYOUT CLASSES
 }
 
 .lead-text, .quiz-question-text {
-  font-family: 'Open Sans';
   font-size: 1.2em;
   margin: .5rem 2rem;
   text-align: center;
 }
 
 .steps {
-  font-family: 'Open Sans';
   height: 2rem;
   margin: 1rem auto;
 }
@@ -93,7 +93,7 @@ LAYOUT CLASSES
 
 .inactive-step {
   background: #b6d8e4;
-  color: #666;
+  color: #555;
 }
 
 [class*='prog-bar-'] {
@@ -119,6 +119,124 @@ LAYOUT CLASSES
   margin: 3rem auto;
 }
 
+
+/*********************************
+OBJECT ELEMENTS
+*********************************/
+
+.calib-body {
+  margin: 2rem auto;
+}
+
+.calib-ui {
+  height: 10rem;
+  margin: 2rem auto;
+  position: relative;
+}
+
+[class*='calib-side-'] {
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.calib-side-l { left: 30%; }
+.calib-side-r { right: 30%; }
+
+[class*='calib-tone-'] {
+  border-radius: 10rem;
+  color: #888;
+  font-size: .8em;
+  margin: .5rem 0;
+  padding: .3rem;
+  text-align: center;
+}
+
+.active-calib-tone {
+  background: #b9aac8;
+  color: #444;
+  font-weight: 700;
+}
+
+[class*='calib-label-'] {
+  background: #b6d8e4;
+  border-radius: 100%;
+  font-size: 1.2em;
+  height: 4rem;
+  line-height: 320%;
+  margin: .5rem 0;
+  text-align: center;
+  width: 4rem;
+}
+
+.active-calib-label {
+  background: #008aab;
+  color: #fff;
+}
+
+.calib-vol {
+  background: #b6d8e4;
+  border-radius: 100%;
+  display: inline-block;
+  height: 10rem;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10rem;
+}
+
+.vol-icons {
+  position: absolute;
+  right: 12%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.vol-icons button {
+  background: #532d6d;
+  border: none;
+  border-radius: 100%;
+  color: #fff;
+  display: block;
+  font-size: 1.2em;
+  height: 2rem;
+  margin: 1rem 0;
+  width: 2rem;
+}
+
+.vol-icons button:hover {
+  background: #48275e;
+}
+
+.vol-icons button:active {
+  top: 1px;
+}
+
+
+/*********************************
+BUTTONS
+*********************************/
+
+[class*='btn-submit-'] {
+  background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
+  border: none;
+  border-radius: 10rem;
+  color: #fff;
+  display: block;
+  font-size: 1.2em;
+  font-weight: 200;
+  letter-spacing: .05em;
+  margin: 2rem auto;
+  outline: none;
+  padding: .5rem 1.5rem;
+}
+
+[class*='btn-submit-']:hover {
+  background: linear-gradient(to right, #7a47a1 0%, #00738f 100%);
+}
+
 .btns-yn {
   bottom: 10%;
   left: 50%;
@@ -126,33 +244,6 @@ LAYOUT CLASSES
   position: absolute;
   text-align: center;
   transform: translate(-50%, -50%);
-}
-
-
-/*********************************
-BUTTON CLASSES
-*********************************/
-
-.btn-submit {
-  background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
-  border: none;
-  border-radius: 10rem;
-  bottom: 10%;
-  color: #fff;
-  display: block;
-  font-size: 1.2em;
-  font-weight: 200;
-  left: 50%;
-  letter-spacing: .05em;
-  margin: 1rem auto;
-  outline: none;
-  padding: .5rem 1.5rem;
-  position: absolute;
-  transform: translate(-50%, -50%);
-}
-
-.btn-submit:hover {
-  background: linear-gradient(to right, #7a47a1 0%, #00738f 100%);
 }
 
 [class*='btn-yn-'] {
@@ -168,20 +259,8 @@ BUTTON CLASSES
   width: 8rem;
 }
 
-.btn-yn-yes {
-  background: #532d6d;
-  color: #fff;
-}
+.btn-yn-yes { background: #532d6d;  color: #fff; }
+.btn-yn-no  { background: #b9aac8;  color: #555; }
 
-.btn-yn-yes:hover {
-  background: #442559;
-}
-
-.btn-yn-no {
-  background: #b9aac8;
-  color: #666;
-}
-
-.btn-yn-no:hover {
-  background: #afa0bd;
-}
+.btn-yn-yes:hover { background: #442559; }
+.btn-yn-no:hover  { background: #afa0bd; }
