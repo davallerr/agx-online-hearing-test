@@ -31,10 +31,10 @@ var dataController = (function() {
   };
 
   var results = {
-    quiz: {},
     calibration: {},
-    toneTest: {},
-    speechTest: {}
+    quiz: {},
+    speechTest: {},
+    toneTest: {}
   };
 
 
@@ -51,6 +51,10 @@ var dataController = (function() {
 
     getResponseNum: function(stage) {
       return Object.keys(results[stage]).length + 1;
+    },
+
+    setCalibSetting: function(q, setting) {
+      results.calibration['setting' + q] = setting;
     },
 
     setQuizResponse: function(q, response) {
@@ -117,6 +121,10 @@ var UIController = (function() {
 
     addListener: function(el, event, call) {
       document.querySelector(el).addEventListener(event, call);
+    },
+
+    getCalibSetting: function(event) {
+      return 'not sure how getting sound setting will work!';
     },
 
     getDOMStrings: function() {
@@ -230,19 +238,28 @@ var controller = (function(dataCtrl, UICtrl) {
 
     q = dataCtrl.getResponseNum('calibration');
 
-    if (q < 4) {
+    if (q < 5) {
       // set current progress bubble and play tone
       UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
       ////////////////////////////
       // SOUNDS?! ///////////////////////////////
       //////////////////////////////////
+
     } else {
       ctrlSetStepToneTest();
     }
   };
 
   var ctrlCalibResponse = function() {
-    // do things
+    // TESTING INPUT FOR NOW
+    var q, setting;
+
+    q = dataCtrl.getResponseNum('calibration');
+    setting = UICtrl.getCalibSetting(event);
+
+    dataCtrl.setCalibSetting(q, setting);
+
+    ctrlCalibNext();
   };
 
 

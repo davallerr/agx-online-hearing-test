@@ -6,12 +6,16 @@ open sans
 /* COLORS
 purple:     #874fb2
 --shade:    #7a47a1
+
+--tint:     #e6f0f4
+-tint:     #b6d8e4
 teal:       #008aab
 --shade:    #00738f
---tint:     #b6d8e4
+
+--tint:     #ece9f5
+-tint:     #b9aac8
 ag purple:  #532d6d
---shade:    #48275e
---tint:     #b9aac8
+--shade:    #3d214f
 */
 
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
@@ -149,7 +153,7 @@ OBJECT ELEMENTS
   color: #888;
   font-size: .8em;
   margin: .5rem 0;
-  padding: .3rem;
+  padding: .2rem;
   text-align: center;
 }
 
@@ -176,7 +180,7 @@ OBJECT ELEMENTS
 }
 
 .calib-vol {
-  background: #b6d8e4;
+  background: #e6f0f4;
   border-radius: 100%;
   display: inline-block;
   height: 10rem;
@@ -194,26 +198,6 @@ OBJECT ELEMENTS
   transform: translateY(-50%);
 }
 
-.vol-icons button {
-  background: #532d6d;
-  border: none;
-  border-radius: 100%;
-  color: #fff;
-  display: block;
-  font-size: 1.2em;
-  height: 2rem;
-  margin: 1rem 0;
-  width: 2rem;
-}
-
-.vol-icons button:hover {
-  background: #48275e;
-}
-
-.vol-icons button:active {
-  top: 1px;
-}
-
 
 /*********************************
 BUTTONS
@@ -229,6 +213,7 @@ BUTTONS
   font-weight: 200;
   letter-spacing: .05em;
   margin: 2rem auto;
+  min-width: 12rem;
   outline: none;
   padding: .5rem 1.5rem;
 }
@@ -262,5 +247,24 @@ BUTTONS
 .btn-yn-yes { background: #532d6d;  color: #fff; }
 .btn-yn-no  { background: #b9aac8;  color: #555; }
 
-.btn-yn-yes:hover { background: #442559; }
+.btn-yn-yes:hover { background: #3d214f; }
 .btn-yn-no:hover  { background: #afa0bd; }
+
+.vol-icons button {
+  background: #532d6d;
+  border: none;
+  border-radius: 100%;
+  color: #fff;
+  display: block;
+  font-size: 1.2em;
+  height: 2rem;
+  margin: 1rem 0;
+  outline: 0;
+  position: relative;
+  width: 2rem;
+}
+
+.vol-icons button:hover { background: #3d214f; }
+
+.vol-minus:active { top: .05rem; }
+.vol-plus:active  { top: .1rem; }
