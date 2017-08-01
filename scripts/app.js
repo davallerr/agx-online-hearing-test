@@ -2,13 +2,6 @@
 // NOTES
 /*
 
-import for specific element can only be executed once - deduping
-
-display changes need to know if it only has to update existing DOM elements
-  OR remove/add new ones
-
-random thought, because of those things I don't think any kind of 'back' functionality would be wise
-
 
 */
 ///////////////////////////////////////////////////////////////////////////////
@@ -80,30 +73,10 @@ var UIController = (function() {
   var importHTML = document.querySelector('link[id="html-templates"]').import;
 
   var importElements = {
-    agxHearingLogo: importHTML.querySelector('.agx-hearing-logo'),
-    btnsYN:         importHTML.querySelector('.btns-yn'),
-    btnSubmit:      importHTML.querySelector('.btn-submit'),
-    leadText:       importHTML.querySelector('.lead-text'),
-    headerText:     importHTML.querySelector('.header-text'),
-    progBar2:       importHTML.querySelector('.prog-bar-2'),
-    progBar3:       importHTML.querySelector('.prog-bar-3'),
-    progBar4:       importHTML.querySelector('.prog-bar-4'),
-    progBar5:       importHTML.querySelector('.prog-bar-5'),
-    progBar6:       importHTML.querySelector('.prog-bar-6'),
-    progBubble:     importHTML.querySelector('.prog-bubble'),
-    stageCalib:     importHTML.querySelector('.stage-calib'),
-    stageIntro:     importHTML.querySelector('.stage-intro'),
-    stageQuiz:      importHTML.querySelector('.stage-quiz'),
-    steps:          importHTML.querySelector('.steps')
-  }
-
-  var DOMStrings = {
-    agxHearingLogo: '.agx-hearing-logo',
-    btnSubmit:      '.btn-submit',
-    leadText:       '.lead-text',
-    header:         '.header',
-    headerText:     '.header-text',
-    quizBody:       '.quiz-body'
+    stageCalib:   importHTML.querySelector('.stage-calib'),
+    stageIntro:   importHTML.querySelector('.stage-intro'),
+    stageQuiz:    importHTML.querySelector('.stage-quiz'),
+    stageVolume:  importHTML.querySelector('.stage-volume')
   };
 
 
@@ -111,24 +84,11 @@ var UIController = (function() {
   return {
 
     addClass: function(el, nodeNum, newClass) {
-      document.querySelectorAll(el)[nodeNum].className += ' ' + newClass;
-    },
-
-    addImportBlock: function(importEl, destinationString, insertCondition) {
-      var el = importElements[importEl];
-      document.querySelector(destinationString).insertAdjacentElement(insertCondition, el);
-    },
-
-    addListener: function(el, event, call) {
-      document.querySelector(el).addEventListener(event, call);
+      document.querySelectorAll(el)[nodeNum].classList.add(newClass);
     },
 
     getCalibSetting: function(event) {
       return 'not sure how getting sound setting will work!';
-    },
-
-    getDOMStrings: function() {
-      return DOMStrings;
     },
 
     getQuizResponse: function(event) {
@@ -137,6 +97,19 @@ var UIController = (function() {
       } else if (event.target.className === 'btn-yn-no') {
         return false;
       }
+    },
+
+    playTone: function(lvl) {
+      var audio;
+
+      audio = document.getElementById(lvl);
+
+      audio.currentTime = 0;
+      audio.play();
+    },
+
+    setProgBubbles: function(current) {
+      document.querySelectorAll('.prog-bubble')[current - 1].classList.add('prog-current');
     },
 
     setInnerHtml(destinationString, newText)  {
@@ -148,11 +121,11 @@ var UIController = (function() {
       document.querySelector('.quiz-window').innerHTML = '';
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements[el]);
 
-      document.querySelector('.step-' + step).className += ' ' + 'active-step';
+      document.querySelector('.step-' + step).classList.add('active-step');
 
       for (var i=1; i<=4; i++) {
         if (i !== step) {
-          document.querySelector('.step-' + i).className += ' ' + 'inactive-step';
+          document.querySelector('.step-' + i).classList.add('inactive-step');
         }
       }
     },
@@ -186,9 +159,8 @@ var controller = (function(dataCtrl, UICtrl) {
     // set stage to quiz
     UICtrl.setStage('stageQuiz', 1);
 
-    // add yes/no buttons and set listeners
-    UICtrl.addImportBlock('btnsYN', '.quiz-body', 'beforeend');
-    UICtrl.addListener('.btns-yn', 'click', ctrlQuizResponse);
+    // set listeners
+    document.querySelector('.btns-yn').addEventListener('click', ctrlQuizResponse);
 
     // go to questions
     ctrlQuizNextQ();
@@ -202,11 +174,11 @@ var controller = (function(dataCtrl, UICtrl) {
 
     if (q < 7) {
       // set current progress bubble and question text
-      UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
+      UICtrl.setProgBubbles(q);
       document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
     } else {
       document.querySelector('.btns-yn').removeEventListener('click', ctrlQuizResponse);
-      ctrlSetStepCalib();
+      ctrlSetStepVolume();
     }
   };
 
@@ -222,9 +194,18 @@ var controller = (function(dataCtrl, UICtrl) {
     ctrlQuizNextQ();
   };
 
+  var ctrlSetStepVolume = function() {
+    UICtrl.setStage('stageVolume', 2);
+    UICtrl.playTone('noise');
+    document.querySelector('.btn-submit-volume').addEventListener('click', ctrlSetStepCalib);
+  };
+
   var ctrlSetStepCalib = function() {
     // set stage to calibration
     UICtrl.setStage('stageCalib', 2);
+
+    // add listeners to +/- buttons
+    document.querySelector('.vol-plus').addEventListener('click', UICtrl.playTone);
 
     // add listener to set volume button
     document.querySelector('.btn-submit-calib').addEventListener('click', ctrlCalibResponse);
@@ -240,10 +221,11 @@ var controller = (function(dataCtrl, UICtrl) {
 
     if (q < 5) {
       // set current progress bubble and play tone
-      UICtrl.addClass('.prog-bubble', q-1, 'prog-current');
+      UICtrl.setProgBubbles(q);
       ////////////////////////////
       // SOUNDS?! ///////////////////////////////
       //////////////////////////////////
+      UICtrl.playTone('noise');
 
     } else {
       ctrlSetStepToneTest();
