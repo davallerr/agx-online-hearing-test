@@ -91,9 +91,10 @@
 
       <div class="volume-body">
         <p class="lead-text">Adjust the volume on your computer so the noise plays at a comfortable level.</p>
+        <p class="lead-text">Please do not adjust your computer volume after this step.</p>
         <button class="btn-submit-volume">Set Volume</button>
 
-        <div class="calib-tones">
+        <div class="vol-tones">
           <audio id="noise" loop="true" src="../sounds/noise.wav"></audio>
         </div>
       </div>
@@ -123,7 +124,7 @@
       </div>
 
       <div class="calib-body">
-        <p class="lead-text">Adjust volume using plus/minus text.</p>
+        <p class="lead-text">Adjust the volume using the <span class="vol-text">+</span> and <span class="vol-text">&ndash;</span> buttons until you can barely hear the tone.</p>
 
         <div class="calib-ui">
           <div class="calib-side-l">
@@ -151,7 +152,9 @@
         <button class="btn-submit-calib">Set Volume</button>
 
         <div class="calib-tones">
-          <audio id="noise" loop="true" src="../sounds/noise.wav"></audio>
+          <!-- eventually we want a high and a low tone -->
+          <audio id="audio-calib-high" loop="true" src="../sounds/noise.wav"></audio>
+          <audio id="audio-calib-low" loop="true" src="../sounds/noise.wav"></audio>
         </div>
       </div>
     </div>
@@ -159,7 +162,7 @@
 
     <!-- TONE TEST -->
 
-    <div class="test">
+    <div class="stage-test">
       <div class="header">
         <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
 

@@ -51,7 +51,11 @@ var dataController = (function() {
     },
 
     setQuizResponse: function(q, response) {
-      results.quiz['q' + q] = response;
+      results.quiz['q' + (q - 1)] = response;
+    },
+
+    setVolumeResponse: function(set) {
+      results.calibration['localVolume'] = set;
     },
 
     testing: function() {
@@ -76,6 +80,7 @@ var UIController = (function() {
     stageCalib:   importHTML.querySelector('.stage-calib'),
     stageIntro:   importHTML.querySelector('.stage-intro'),
     stageQuiz:    importHTML.querySelector('.stage-quiz'),
+    stageToneTest:  importHTML.querySelector('.stage-test'),
     stageVolume:  importHTML.querySelector('.stage-volume')
   };
 
@@ -99,10 +104,10 @@ var UIController = (function() {
       }
     },
 
-    playTone: function(lvl) {
+    playTone: function(id) {
       var audio;
 
-      audio = document.getElementById(lvl);
+      audio = document.getElementById(id);
 
       audio.currentTime = 0;
       audio.play();
@@ -132,6 +137,48 @@ var UIController = (function() {
 
     setStageIntro: function() {
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
+    },
+
+    volDown: function() {
+      var audio, current;
+
+      current = document.querySelector('.active-calib-tone');
+      console.log(current);
+
+      current.textContent === 'High' ? audio = document.getElementById('audio-calib-high') : audio = document.getElementById('audio-calib-low');
+
+      console.log(audio.volume);
+
+      if(audio.volume >= 0.1) {
+        audio.volume -= 0.1;
+      }
+
+      console.log(audio);
+    },
+
+    volFull: function(calibTone) {
+      var audio;
+
+      audio = document.getElementById(calibTone);
+
+      audio.volume = 1.0;
+    },
+
+    volUp: function() {
+      var audio, current;
+
+      current = document.querySelector('.active-calib-tone');
+      console.log(current);
+
+      current.textContent === 'High' ? audio = document.getElementById('audio-calib-high') : audio = document.getElementById('audio-calib-low');
+
+      console.log(audio.volume);
+
+      if(audio.volume <= 0.9) {
+        audio.volume += 0.1;
+      }
+
+      console.log(audio);
     }
 
   };
@@ -196,16 +243,24 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepVolume = function() {
     UICtrl.setStage('stageVolume', 2);
+    UICtrl.setProgBubbles(1);
     UICtrl.playTone('noise');
-    document.querySelector('.btn-submit-volume').addEventListener('click', ctrlSetStepCalib);
+    document.querySelector('.btn-submit-volume').addEventListener('click', ctrlVolumeResponse);
+  };
+
+  var ctrlVolumeResponse = function() {
+    dataCtrl.setVolumeResponse('set');
+    ctrlSetStepCalib();
   };
 
   var ctrlSetStepCalib = function() {
     // set stage to calibration
     UICtrl.setStage('stageCalib', 2);
+    UICtrl.setProgBubbles(1);
 
     // add listeners to +/- buttons
-    document.querySelector('.vol-plus').addEventListener('click', UICtrl.playTone);
+    document.querySelector('.vol-plus').addEventListener('click', UICtrl.volUp);
+    document.querySelector('.vol-minus').addEventListener('click', UICtrl.volDown);
 
     // add listener to set volume button
     document.querySelector('.btn-submit-calib').addEventListener('click', ctrlCalibResponse);
@@ -215,17 +270,25 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlCalibNext = function() {
-    var q;
+    var audio, q;
 
     q = dataCtrl.getResponseNum('calibration');
 
-    if (q < 5) {
-      // set current progress bubble and play tone
+    if (q < 6) {
+      // set current progress bubble and play appropriate tone
+      // account for global volume step
       UICtrl.setProgBubbles(q);
-      ////////////////////////////
-      // SOUNDS?! ///////////////////////////////
-      //////////////////////////////////
-      UICtrl.playTone('noise');
+
+      // update current side and tone
+      ///////////////////////////////////////////////////////////////////////////
+      // SEPARATE AUDIO FILES OF SAME TONE, ONE FOR LEFT CHANNEL ONE FOR RIGHT //
+      ///////////////////////////////////////////////////////////////////////////
+
+      (q % 2) === 0 ? audio = 'audio-calib-high' : audio = 'audio-calib-low';
+
+      console.log(audio);
+      UICtrl.playTone(audio);
+      UICtrl.volFull(audio);
 
     } else {
       ctrlSetStepToneTest();
@@ -243,6 +306,11 @@ var controller = (function(dataCtrl, UICtrl) {
 
     ctrlCalibNext();
   };
+
+  var ctrlSetStepToneTest = function() {
+    UICtrl.setStage('stageToneTest', 3);
+  };
+
 
 
   // RETURNED PUBLIC FUNCTIONS
