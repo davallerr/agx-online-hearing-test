@@ -105,12 +105,28 @@ var UIController = (function() {
     },
 
     playTone: function(id) {
-      var audio;
+      var allAudio, allAudioArray, audio;
+
+      allAudio = document.getElementsByTagName('audio');
+      allAudioArray = Array.prototype.slice.call(allAudio);
+
+      allAudioArray.forEach(function(el) {
+        el.pause();
+        el.currentTime = 0;
+      });
 
       audio = document.getElementById(id);
 
       audio.currentTime = 0;
       audio.play();
+    },
+
+    setCalibLabel: function(tone, side) {
+      document.querySelector('.active-calib-tone').classList.remove('active-calib-tone');
+      document.querySelector('.active-calib-label').classList.remove('active-calib-label');
+
+      document.querySelector(tone).classList.add('active-calib-tone');
+      document.querySelector(side).classList.add('active-calib-label');
     },
 
     setProgBubbles: function(current) {
@@ -140,20 +156,16 @@ var UIController = (function() {
     },
 
     volDown: function() {
-      var audio, current;
+      var audios, audiosArray;
 
-      current = document.querySelector('.active-calib-tone');
-      console.log(current);
+      audios = document.getElementsByTagName('audio');
+      audiosArray = Array.prototype.slice.call(audios);
 
-      current.textContent === 'High' ? audio = document.getElementById('audio-calib-high') : audio = document.getElementById('audio-calib-low');
-
-      console.log(audio.volume);
-
-      if(audio.volume >= 0.1) {
-        audio.volume -= 0.1;
-      }
-
-      console.log(audio);
+      audiosArray.forEach(function(el) {
+        if(!el.paused && el.volume >= .1) {
+          el.volume -= .1;
+        }
+      });
     },
 
     volFull: function(calibTone) {
@@ -161,24 +173,20 @@ var UIController = (function() {
 
       audio = document.getElementById(calibTone);
 
-      audio.volume = 1.0;
+      audio.volume = 1;
     },
 
     volUp: function() {
-      var audio, current;
+      var audios, audiosArray;
 
-      current = document.querySelector('.active-calib-tone');
-      console.log(current);
+      audios = document.getElementsByTagName('audio');
+      audiosArray = Array.prototype.slice.call(audios);
 
-      current.textContent === 'High' ? audio = document.getElementById('audio-calib-high') : audio = document.getElementById('audio-calib-low');
-
-      console.log(audio.volume);
-
-      if(audio.volume <= 0.9) {
-        audio.volume += 0.1;
-      }
-
-      console.log(audio);
+      audiosArray.forEach(function(el) {
+        if(!el.paused && el.volume <= .9) {
+          el.volume += .1;
+        }
+      });
     }
 
   };
@@ -270,7 +278,7 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlCalibNext = function() {
-    var audio, q;
+    var audio, q, sideLabel, toneLabel;
 
     q = dataCtrl.getResponseNum('calibration');
 
@@ -279,14 +287,35 @@ var controller = (function(dataCtrl, UICtrl) {
       // account for global volume step
       UICtrl.setProgBubbles(q);
 
-      // update current side and tone
-      ///////////////////////////////////////////////////////////////////////////
-      // SEPARATE AUDIO FILES OF SAME TONE, ONE FOR LEFT CHANNEL ONE FOR RIGHT //
-      ///////////////////////////////////////////////////////////////////////////
+      // determine which tone/side user is on
+      switch(q) {
+        case 2:
+          audio = 'audio-calib-l-high';
+          sideLabel = '.calib-label-l';
+          toneLabel = '.calib-tone-l-high';
+          break;
+        case 3:
+          audio = 'audio-calib-l-low';
+          sideLabel = '.calib-label-l';
+          toneLabel = '.calib-tone-l-low';
+          break;
+        case 4:
+          audio = 'audio-calib-r-high';
+          sideLabel = '.calib-label-r';
+          toneLabel = '.calib-tone-r-high';
+          break;
+        case 5:
+          audio = 'audio-calib-r-low';
+          sideLabel = '.calib-label-r';
+          toneLabel = '.calib-tone-r-low';
+          break;
+        default:
+          console.log('need a default');
+          console.log('q: ' + q);
+      }
 
-      (q % 2) === 0 ? audio = 'audio-calib-high' : audio = 'audio-calib-low';
-
-      console.log(audio);
+      // sets tone and side label and plays appropriate tone
+      UICtrl.setCalibLabel(toneLabel, sideLabel);
       UICtrl.playTone(audio);
       UICtrl.volFull(audio);
 
