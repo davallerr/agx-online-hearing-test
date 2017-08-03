@@ -15,12 +15,12 @@
 var dataController = (function() {
 
   var quizQuestions = {
-    q1: 'Question 1 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
-    q2: 'Question 2 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
-    q3: 'Question 3 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
-    q4: 'Question 4 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
-    q5: 'Question 5 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.',
-    q6: 'Question 6 content Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam rhoncus tincidunt iaculis. Vivamus pellentesque at lorem ut ultrices.'
+    q1: 'Do you have trouble keeping up with conversations in busy restaurants?',
+    q2: 'Are you often told that you set the television volume too loud?',
+    q3: 'Do you have a hard time hearing people over the phone?',
+    q4: 'Are you sometimes like, "these women and children need to SPEAK UP" and stuff?',
+    q5: 'Are you accused of being intentionally thick by your significant other when you ask them to repeat themselves, say 5 or 6 times?',
+    q6: 'Can you think of anymore hearing questions?'
   };
 
   var results = {
@@ -46,12 +46,16 @@ var dataController = (function() {
       return Object.keys(results[stage]).length + 1;
     },
 
-    setCalibSetting: function(q, setting) {
-      results.calibration['setting' + q] = setting;
+    setCalibSetting: function(q, vol) {
+      var settings;
+
+      settings = ['leftHigh', 'leftLow', 'rightHigh', 'rightLow'];
+
+      results.calibration[settings[q-2]] = vol;
     },
 
     setQuizResponse: function(q, response) {
-      results.quiz['q' + (q - 1)] = response;
+      results.quiz['q' + q] = response;
     },
 
     setVolumeResponse: function(set) {
@@ -92,8 +96,15 @@ var UIController = (function() {
       document.querySelectorAll(el)[nodeNum].classList.add(newClass);
     },
 
-    getCalibSetting: function(event) {
-      return 'not sure how getting sound setting will work!';
+    getCalibSetting: function(q) {
+      var audio, vol;
+
+      // current step determines what audio to target
+      audio = document.getElementsByTagName('audio')[q-2];
+      console.log(audio.volume);
+      // identify current volume of audio
+      return audio.volume;
+      // return volume
     },
 
     getQuizResponse: function(event) {
@@ -318,20 +329,19 @@ var controller = (function(dataCtrl, UICtrl) {
       UICtrl.setCalibLabel(toneLabel, sideLabel);
       UICtrl.playTone(audio);
       UICtrl.volFull(audio);
-
     } else {
       ctrlSetStepToneTest();
     }
   };
 
   var ctrlCalibResponse = function() {
-    // TESTING INPUT FOR NOW
-    var q, setting;
+    var q, vol, volRound;
 
     q = dataCtrl.getResponseNum('calibration');
-    setting = UICtrl.getCalibSetting(event);
+    vol = UICtrl.getCalibSetting(q);
+    volRound = vol.toFixed(1);
 
-    dataCtrl.setCalibSetting(q, setting);
+    dataCtrl.setCalibSetting(q, volRound);
 
     ctrlCalibNext();
   };
