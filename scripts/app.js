@@ -373,27 +373,22 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlToneNext = function() {
-    var q;
+    var freqs, q;
 
+    freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
     q = dataCtrl.getResponseNum('toneTest');
 
-    if(q < 5) {
-      var freqs;
-
-      freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
-
+    if(q < 6) {
       UICtrl.setProgBubbles(q);
       UICtrl.setFreqLabel(q - 1);
       UICtrl.playTone(freqs[q - 1]);
       UICtrl.volFull(freqs[q - 1]);
-
     } else {
       ctrlSetStepSpeechTest();
     }
   };
 
   var ctrlToneResponse = function(event) {
-    // get quiz question response from y/n buttons
     var freqs, q, response;
 
     freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
@@ -406,8 +401,8 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepSpeechTest = function() {
-    console.log('things');
-  }
+    console.log('just speech test things');
+  };
 
 
 
