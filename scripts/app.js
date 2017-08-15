@@ -58,6 +58,10 @@ var dataController = (function() {
       results.quiz['q' + q] = response;
     },
 
+    setToneResponse: function(freq, response) {
+      results.toneTest[freq + 'Hz'] = response;
+    },
+
     setVolumeResponse: function(set) {
       results.calibration['localVolume'] = set;
     },
@@ -84,7 +88,7 @@ var UIController = (function() {
     stageCalib:   importHTML.querySelector('.stage-calib'),
     stageIntro:   importHTML.querySelector('.stage-intro'),
     stageQuiz:    importHTML.querySelector('.stage-quiz'),
-    stageToneTest:  importHTML.querySelector('.stage-test'),
+    stageToneTest:  importHTML.querySelector('.stage-tone-test'),
     stageVolume:  importHTML.querySelector('.stage-volume')
   };
 
@@ -107,10 +111,10 @@ var UIController = (function() {
       // return volume
     },
 
-    getQuizResponse: function(event) {
-      if (event.target.className === 'btn-yn-yes') {
+    getYesNoResponse: function(event) {
+      if(event.target.className === 'btn-yn-yes') {
         return true;
-      } else if (event.target.className === 'btn-yn-no') {
+      } else if(event.target.className === 'btn-yn-no') {
         return false;
       }
     },
@@ -140,6 +144,15 @@ var UIController = (function() {
       document.querySelector(side).classList.add('active-calib-label');
     },
 
+    setFreqLabel: function(q) {
+      var freqs;
+
+      freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
+
+      document.querySelector('.active-freq').classList.remove('active-freq');
+      document.querySelector('.freq-' + freqs[q]).classList.add('active-freq');
+    },
+
     setProgBubbles: function(current) {
       document.querySelectorAll('.prog-bubble')[current - 1].classList.add('prog-current');
     },
@@ -156,7 +169,7 @@ var UIController = (function() {
       document.querySelector('.step-' + step).classList.add('active-step');
 
       for (var i=1; i<=4; i++) {
-        if (i !== step) {
+        if(i !== step) {
           document.querySelector('.step-' + i).classList.add('inactive-step');
         }
       }
@@ -173,8 +186,9 @@ var UIController = (function() {
       audiosArray = Array.prototype.slice.call(audios);
 
       audiosArray.forEach(function(el) {
-        if(!el.paused && el.volume >= .1) {
-          el.volume -= .1;
+        if(!el.paused && el.volume >= .05) {
+          el.volume = Math.round((el.volume - .05) * 100) / 100;
+          console.log(el.volume);
         }
       });
     },
@@ -194,8 +208,9 @@ var UIController = (function() {
       audiosArray = Array.prototype.slice.call(audios);
 
       audiosArray.forEach(function(el) {
-        if(!el.paused && el.volume <= .9) {
-          el.volume += .1;
+        if(!el.paused && el.volume <= .95) {
+          el.volume = Math.round((el.volume + .05) * 100) / 100;
+          console.log(el.volume);
         }
       });
     }
@@ -238,7 +253,7 @@ var controller = (function(dataCtrl, UICtrl) {
 
     q = dataCtrl.getResponseNum('quiz');
 
-    if (q < 7) {
+    if(q < 7) {
       // set current progress bubble and question text
       UICtrl.setProgBubbles(q);
       document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
@@ -253,7 +268,7 @@ var controller = (function(dataCtrl, UICtrl) {
     var q, response;
 
     q = dataCtrl.getResponseNum('quiz');
-    response = UICtrl.getQuizResponse(event);
+    response = UICtrl.getYesNoResponse(event);
 
     dataCtrl.setQuizResponse(q, response);
 
@@ -263,7 +278,9 @@ var controller = (function(dataCtrl, UICtrl) {
   var ctrlSetStepVolume = function() {
     UICtrl.setStage('stageVolume', 2);
     UICtrl.setProgBubbles(1);
+
     UICtrl.playTone('noise');
+
     document.querySelector('.btn-submit-volume').addEventListener('click', ctrlVolumeResponse);
   };
 
@@ -293,7 +310,7 @@ var controller = (function(dataCtrl, UICtrl) {
 
     q = dataCtrl.getResponseNum('calibration');
 
-    if (q < 6) {
+    if(q < 6) {
       // set current progress bubble and play appropriate tone
       // account for global volume step
       UICtrl.setProgBubbles(q);
@@ -348,7 +365,49 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepToneTest = function() {
     UICtrl.setStage('stageToneTest', 3);
+    UICtrl.setProgBubbles(1);
+
+    document.querySelector('.btns-yn').addEventListener('click', ctrlToneResponse);
+
+    ctrlToneNext();
   };
+
+  var ctrlToneNext = function() {
+    var q;
+
+    q = dataCtrl.getResponseNum('toneTest');
+
+    if(q < 5) {
+      var freqs;
+
+      freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
+
+      UICtrl.setProgBubbles(q);
+      UICtrl.setFreqLabel(q - 1);
+      UICtrl.playTone(freqs[q - 1]);
+      UICtrl.volFull(freqs[q - 1]);
+
+    } else {
+      ctrlSetStepSpeechTest();
+    }
+  };
+
+  var ctrlToneResponse = function(event) {
+    // get quiz question response from y/n buttons
+    var freqs, q, response;
+
+    freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
+    q = dataCtrl.getResponseNum('toneTest');
+    response = UICtrl.getYesNoResponse(event);
+
+    dataCtrl.setToneResponse(freqs[q - 1], response);
+
+    ctrlToneNext();
+  };
+
+  var ctrlSetStepSpeechTest = function() {
+    console.log('things');
+  }
 
 
 

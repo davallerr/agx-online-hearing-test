@@ -129,6 +129,19 @@ LAYOUT ELEMENTS
   margin: 3rem auto;
 }
 
+.test-frequencies {
+  color: #888;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.test-frequencies p {
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 0;
+  width: 15%;
+}
+
 
 /*********************************
 OBJECT ELEMENTS
@@ -165,7 +178,7 @@ OBJECT ELEMENTS
 
 .active-calib-tone {
   background: #b9aac8;
-  color: #444;
+  color: #000;
   font-weight: 700;
 }
 
@@ -202,6 +215,11 @@ OBJECT ELEMENTS
   right: 12%;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.active-freq {
+  color: #532d6d;
+  font-weight: 700;
 }
 
 
@@ -274,3 +292,76 @@ BUTTONS
 
 .vol-minus:active { top: .05rem; }
 .vol-plus:active  { top: .1rem; }
+
+
+/*********************************
+SPEAKER ICON
+*********************************/
+
+.icon-speaker {
+  position: absolute;
+  height: 3rem;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  width: 4rem;
+}
+
+.icon-speaker-base {
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+}
+
+.icon-speaker-rect {
+  background: #b6d8e4;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+}
+
+.icon-speaker-cone {
+  border-bottom: 2rem solid transparent;
+  border-right: 2rem solid #b6d8e4;
+  border-top: 2rem solid transparent;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+}
+
+.icon-speaker-waves {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 35%;
+}
+
+[class*='icon-speaker-wave-'] {
+  background: #008aab;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: .2rem;
+}
+
+.icon-speaker-wave-1 {
+  height: 50%;
+  left: 0;
+}
+
+.icon-speaker-wave-2 {
+  height: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-speaker-wave-3 {
+  height: 100%;
+  right: 0;
+}

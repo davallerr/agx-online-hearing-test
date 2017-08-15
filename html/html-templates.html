@@ -134,7 +134,17 @@
           </div>
 
           <div class="calib-vol">
-            <div class="calib-speaker"></div>
+            <div class="icon-speaker">
+              <div class="icon-speaker-base">
+                <div class="icon-speaker-rect"></div>
+                <div class="icon-speaker-cone"></div>
+              </div>
+              <div class="icon-speaker-waves">
+                <div class="icon-speaker-wave-1"></div>
+                <div class="icon-speaker-wave-2"></div>
+                <div class="icon-speaker-wave-3"></div>
+              </div>
+            </div>
 
             <div class="vol-icons">
               <button class="vol-plus">+</button>
@@ -163,7 +173,7 @@
 
     <!-- TONE TEST -->
 
-    <div class="stage-test">
+    <div class="stage-tone-test">
       <div class="header">
         <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
 
@@ -184,7 +194,20 @@
       </div>
 
       <div class="test-body">
-        <p class="lead-text">Tone test lead text.</p>
+        <p class="lead-text">Do you hear the tone playing?</p>
+
+        <div class="test-frequencies">
+          <p class="freq-14000hz active-freq">14000Hz</p>
+          <p class="freq-14500hz">14500Hz</p>
+          <p class="freq-14800hz">14800Hz</p>
+          <p class="freq-15000hz">15000Hz</p>
+          <p class="freq-16000hz">16000Hz</p>
+        </div>
+
+        <div class="btns-yn">
+          <button class="btn-yn-yes">Yes</button>
+          <button class="btn-yn-no">No</button>
+        </div>
 
         <div class="test-tones">
           <audio id="14000hz" src="../sounds/14000.wav"></audio>
@@ -195,6 +218,11 @@
         </div>
       </div>
     </div>
+
+
+    <!-- SPEECH TEST -->
+
+
 
 
     <!------------------------------------------->
