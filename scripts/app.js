@@ -85,11 +85,12 @@ var UIController = (function() {
   var importHTML = document.querySelector('link[id="html-templates"]').import;
 
   var importElements = {
-    stageCalib:   importHTML.querySelector('.stage-calib'),
-    stageIntro:   importHTML.querySelector('.stage-intro'),
-    stageQuiz:    importHTML.querySelector('.stage-quiz'),
-    stageToneTest:  importHTML.querySelector('.stage-tone-test'),
-    stageVolume:  importHTML.querySelector('.stage-volume')
+    stageCalib:       importHTML.querySelector('.stage-calib'),
+    stageIntro:       importHTML.querySelector('.stage-intro'),
+    stageQuiz:        importHTML.querySelector('.stage-quiz'),
+    stageSpeechTest:  importHTML.querySelector('.stage-speech-test'),
+    stageToneTest:    importHTML.querySelector('.stage-tone-test'),
+    stageVolume:      importHTML.querySelector('.stage-volume')
   };
 
 
@@ -105,10 +106,8 @@ var UIController = (function() {
 
       // current step determines what audio to target
       audio = document.getElementsByTagName('audio')[q-2];
-      console.log(audio.volume);
-      // identify current volume of audio
+      // identify and return current volume of audio
       return audio.volume;
-      // return volume
     },
 
     getYesNoResponse: function(event) {
@@ -122,24 +121,28 @@ var UIController = (function() {
     playTone: function(id) {
       var allAudio, allAudioArray, audio;
 
+      // create array of all present audio tags
       allAudio = document.getElementsByTagName('audio');
       allAudioArray = Array.prototype.slice.call(allAudio);
 
+      // stop and reset all other audio
       allAudioArray.forEach(function(el) {
         el.pause();
         el.currentTime = 0;
       });
 
+      // locate and start playing new audio at full volume
       audio = document.getElementById(id);
-
       audio.currentTime = 0;
       audio.play();
     },
 
     setCalibLabel: function(tone, side) {
+      // remove current active labels
       document.querySelector('.active-calib-tone').classList.remove('active-calib-tone');
       document.querySelector('.active-calib-label').classList.remove('active-calib-label');
 
+      // set new active labels
       document.querySelector(tone).classList.add('active-calib-tone');
       document.querySelector(side).classList.add('active-calib-label');
     },
@@ -147,19 +150,16 @@ var UIController = (function() {
     setFreqLabel: function(q) {
       var freqs;
 
+      // array of frequency classes
       freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
 
+      // remove existing active label and set new one
       document.querySelector('.active-freq').classList.remove('active-freq');
       document.querySelector('.freq-' + freqs[q]).classList.add('active-freq');
     },
 
     setProgBubbles: function(current) {
       document.querySelectorAll('.prog-bubble')[current - 1].classList.add('prog-current');
-    },
-
-    setInnerHtml(destinationString, newText)  {
-      document.querySelector(destinationString).innerHTML = '';
-      document.querySelector(destinationString).innerHTML = newText;
     },
 
     setStage: function(el, step) {
@@ -229,7 +229,7 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepIntro = function() {
     // clear window and add intro step elements to DOM
-    UICtrl.setInnerHtml('.quiz-window', '');
+    document.querySelector('.quiz-window').innerHTML = '';
     UICtrl.setStageIntro();
 
     // add listener to start button
@@ -318,22 +318,22 @@ var controller = (function(dataCtrl, UICtrl) {
       // determine which tone/side user is on
       switch(q) {
         case 2:
-          audio = 'audio-calib-l-high';
+          audio =     'audio-calib-l-high';
           sideLabel = '.calib-label-l';
           toneLabel = '.calib-tone-l-high';
           break;
         case 3:
-          audio = 'audio-calib-l-low';
+          audio =     'audio-calib-l-low';
           sideLabel = '.calib-label-l';
           toneLabel = '.calib-tone-l-low';
           break;
         case 4:
-          audio = 'audio-calib-r-high';
+          audio =     'audio-calib-r-high';
           sideLabel = '.calib-label-r';
           toneLabel = '.calib-tone-r-high';
           break;
         case 5:
-          audio = 'audio-calib-r-low';
+          audio =     'audio-calib-r-low';
           sideLabel = '.calib-label-r';
           toneLabel = '.calib-tone-r-low';
           break;
@@ -401,7 +401,8 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepSpeechTest = function() {
-    console.log('just speech test things');
+    UICtrl.setStage('stageSpeechTest', 4);
+    UICtrl.setProgBubbles(1);
   };
 
 

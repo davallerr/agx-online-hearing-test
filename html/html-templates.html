@@ -1,13 +1,9 @@
 <html lang="en">
 
-  <!--
   <head>
     <meta charset = "UTF-8">
-    <link href="../styles/styles.css" rel="stylesheet">
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <title>AGX Online Hearing Test</title>
+    <title>AGX Online Hearing Test HTML Resources</title>
   </head>
-  -->
 
 
   <body>
@@ -71,7 +67,7 @@
 
     <div class="stage-volume">
       <div class="header">
-        <img class="agx-hearing-logo logo stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
+        <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
 
         <div class="steps">
           <div class="step-1">Quiz</div>
@@ -193,10 +189,10 @@
         </div>
       </div>
 
-      <div class="test-body">
+      <div class="tone-test-body">
         <p class="lead-text">Do you hear the tone playing?</p>
 
-        <div class="test-frequencies">
+        <div class="tone-test-frequencies">
           <p class="freq-14000hz active-freq">14000Hz</p>
           <p class="freq-14500hz">14500Hz</p>
           <p class="freq-14800hz">14800Hz</p>
@@ -209,7 +205,7 @@
           <button class="btn-yn-no">No</button>
         </div>
 
-        <div class="test-tones">
+        <div class="tone-test-tones">
           <audio id="14000hz" src="../sounds/14000.wav"></audio>
           <audio id="14500hz" src="../sounds/14500.wav"></audio>
           <audio id="14800hz" src="../sounds/14800.wav"></audio>
@@ -222,6 +218,55 @@
 
     <!-- SPEECH TEST -->
 
+    <div class="stage-speech-test">
+      <div class="header">
+        <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
+
+        <div class="steps">
+          <div class="step-1">Quiz</div>
+          <div class="step-2">Sound Callibration</div>
+          <div class="step-3">Tone Test</div>
+          <div class="step-4">Speech Test</div>
+        </div>
+
+        <div class="prog-bar">
+          <div class="prog-bubble"></div>
+          <div class="prog-bubble"></div>
+          <div class="prog-bubble"></div>
+          <div class="prog-bubble"></div>
+          <div class="prog-bubble"></div>
+        </div>
+      </div>
+
+      <div class="speech-test-body">
+        <p class="lead-text">Speech test, bruv</p>
+
+        <div class="speech-test-tones">
+          <audio id="14000hz" src="../sounds/14000.wav"></audio>
+          <audio id="14500hz" src="../sounds/14500.wav"></audio>
+          <audio id="14800hz" src="../sounds/14800.wav"></audio>
+          <audio id="15000hz" src="../sounds/15000.wav"></audio>
+          <audio id="16000hz" src="../sounds/16000.wav"></audio>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div class="stage-results">
+      <div class="header">
+        <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
+
+        <div class="steps">
+          <div class="active-step">Results</div>
+        </div>
+      </div>
+
+      <div class="results-body">
+        <p class="lead-text">Your AGX<sup>&reg;</sup> Online Hearing Test Results</p>
+      </div>
+    </div>
 
 
 

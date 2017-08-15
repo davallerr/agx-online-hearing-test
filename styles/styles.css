@@ -45,7 +45,7 @@ LAYOUT ELEMENTS
 
 .quiz-window {
   background: #fff;
-  box-shadow: .1rem .1rem 1rem #666;
+  box-shadow: 0 .2rem 1rem #666;
   height: 30rem;
   left: 50%;
   position: absolute;
@@ -129,13 +129,21 @@ LAYOUT ELEMENTS
   margin: 3rem auto;
 }
 
-.test-frequencies {
+.volume-body {
+  margin: 3rem auto;
+}
+
+.tone-test-body {
+  margin: 3rem auto;
+}
+
+.tone-test-frequencies {
   color: #888;
-  margin: 1rem 0;
+  margin: 1.5rem 0;
   text-align: center;
 }
 
-.test-frequencies p {
+.tone-test-frequencies p {
   display: inline-block;
   font-size: 1.5em;
   margin: 0;
@@ -218,7 +226,7 @@ OBJECT ELEMENTS
 }
 
 .active-freq {
-  color: #532d6d;
+  color: #008aab;
   font-weight: 700;
 }
 
