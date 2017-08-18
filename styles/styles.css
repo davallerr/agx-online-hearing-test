@@ -45,7 +45,7 @@ LAYOUT ELEMENTS
 
 .quiz-window {
   background: #fff;
-  box-shadow: .1rem .1rem 1rem #666;
+  box-shadow: 0 .2rem 1rem #666;
   height: 30rem;
   left: 50%;
   position: absolute;
@@ -58,6 +58,7 @@ LAYOUT ELEMENTS
   margin: 1rem auto;
   text-align: center;
 }
+
 
 .agx-hearing-logo {
   height: auto;
@@ -77,6 +78,12 @@ LAYOUT ELEMENTS
   font-size: 1.2em;
   margin: .5rem 2rem;
   text-align: center;
+}
+
+.vol-text {
+  color: #532d6d;
+  font-size: 1.2em;
+  font-weight: 700;
 }
 
 .steps {
@@ -123,6 +130,27 @@ LAYOUT ELEMENTS
   margin: 3rem auto;
 }
 
+.volume-body {
+  margin: 3rem auto;
+}
+
+.tone-test-body {
+  margin: 3rem auto;
+}
+
+.tone-test-frequencies {
+  color: #888;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.tone-test-frequencies p {
+  display: inline-block;
+  font-size: 1.5em;
+  margin: 0;
+  width: 15%;
+}
+
 
 /*********************************
 OBJECT ELEMENTS
@@ -159,7 +187,7 @@ OBJECT ELEMENTS
 
 .active-calib-tone {
   background: #b9aac8;
-  color: #444;
+  color: #000;
   font-weight: 700;
 }
 
@@ -196,6 +224,15 @@ OBJECT ELEMENTS
   right: 12%;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.active-freq {
+  color: #008aab;
+  font-weight: 700;
+}
+
+[id*='ans']{
+    display: inline-block;
 }
 
 
@@ -247,8 +284,13 @@ BUTTONS
 .btn-yn-yes { background: #532d6d;  color: #fff; }
 .btn-yn-no  { background: #b9aac8;  color: #555; }
 
-.btn-yn-yes:hover { background: #3d214f; }
-.btn-yn-no:hover  { background: #afa0bd; }
+.btn-yn-yes:hover{ background: #3d214f; }
+.btn-yn-no:hover, .speechBtn:hover  { background: #afa0bd; }
+
+[class*='btn-yn-']:active, .speechBtn:active {
+    background: #3d214f;
+    color: #fff;
+}
 
 .vol-icons button {
   background: #532d6d;
@@ -263,8 +305,98 @@ BUTTONS
   position: relative;
   width: 2rem;
 }
+.speechBtn {
+    margin: .25rem;
+    padding: .35rem;
+    border: none;
+  border-radius: 10rem;
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 200;
+  letter-spacing: .05em;
+  outline: none;
+  width: 8rem;
+}
 
+#toneAnswer{
+    margin-top: .25rem;
+    width: 10rem;
+    padding: .5rem;
+}
 .vol-icons button:hover { background: #3d214f; }
 
 .vol-minus:active { top: .05rem; }
 .vol-plus:active  { top: .1rem; }
+
+
+/*********************************
+SPEAKER ICON
+*********************************/
+
+.icon-speaker {
+  position: absolute;
+  height: 3rem;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  width: 4rem;
+}
+
+.icon-speaker-base {
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+}
+
+.icon-speaker-rect {
+  background: #b6d8e4;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50%;
+}
+
+.icon-speaker-cone {
+  border-bottom: 2rem solid transparent;
+  border-right: 2rem solid #b6d8e4;
+  border-top: 2rem solid transparent;
+  height: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+}
+
+.icon-speaker-waves {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 35%;
+}
+
+[class*='icon-speaker-wave-'] {
+  background: #008aab;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: .2rem;
+}
+
+.icon-speaker-wave-1 {
+  height: 50%;
+  left: 0;
+}
+
+.icon-speaker-wave-2 {
+  height: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-speaker-wave-3 {
+  height: 100%;
+  right: 0;
+}
