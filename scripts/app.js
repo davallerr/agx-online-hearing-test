@@ -88,6 +88,7 @@ var UIController = (function() {
     stageCalib:       importHTML.querySelector('.stage-calib'),
     stageIntro:       importHTML.querySelector('.stage-intro'),
     stageQuiz:        importHTML.querySelector('.stage-quiz'),
+    stageResults:     importHTML.querySelector('.stage-results'),
     stageSpeechTest:  importHTML.querySelector('.stage-speech-test'),
     stageToneTest:    importHTML.querySelector('.stage-tone-test'),
     stageVolume:      importHTML.querySelector('.stage-volume')
@@ -166,11 +167,13 @@ var UIController = (function() {
       document.querySelector('.quiz-window').innerHTML = '';
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements[el]);
 
-      document.querySelector('.step-' + step).classList.add('active-step');
-
-      for (var i=1; i<=4; i++) {
-        if(i !== step) {
-          document.querySelector('.step-' + i).classList.add('inactive-step');
+      if(document.querySelector('.step-1')) {
+        document.querySelector('.step-' + step).classList.add('active-step');
+        
+        for (var i=1; i<=4; i++) {
+          if(i !== step) {
+            document.querySelector('.step-' + i).classList.add('inactive-step');
+          }
         }
       }
     },
@@ -384,7 +387,7 @@ var controller = (function(dataCtrl, UICtrl) {
       UICtrl.playTone(freqs[q - 1]);
       UICtrl.volFull(freqs[q - 1]);
     } else {
-      ctrlSetStepSpeechTest();
+      ctrlSetStepResults();
     }
   };
 
@@ -398,6 +401,12 @@ var controller = (function(dataCtrl, UICtrl) {
     dataCtrl.setToneResponse(freqs[q - 1], response);
 
     ctrlToneNext();
+  };
+
+  var ctrlSetStepResults = function() {
+    UICtrl.setStage('stageResults', 1);
+
+
   };
 
   var ctrlSetStepSpeechTest = function() {

@@ -99,6 +99,7 @@ LAYOUT ELEMENTS
 .active-step {
   background: #008aab;
   color: #fff;
+  padding: .5rem 0;
 }
 
 .inactive-step {
