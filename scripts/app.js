@@ -94,6 +94,36 @@ var UIController = (function() {
     stageVolume:      importHTML.querySelector('.stage-volume')
   };
 
+  var speakerWaves = function(vol) {
+    var wave1, wave2, wave3;
+
+    wave1 = document.querySelector('.icon-speaker-wave-1');
+    wave2 = document.querySelector('.icon-speaker-wave-2');
+    wave3 = document.querySelector('.icon-speaker-wave-3');
+
+    if(vol === 1 ) {
+      wave1.style.opacity = 1;
+      wave2.style.opacity = 1;
+      wave3.style.opacity = 1;
+    } else if(vol <= 1 && vol > .65) {
+      wave1.style.opacity = 1;
+      wave2.style.opacity = 1;
+      wave3.style.opacity = .5;
+    } else if(vol <= .65 && vol > .3) {
+      wave1.style.opacity = 1;
+      wave2.style.opacity = .5;
+      wave3.style.opacity = 0;
+    } else if(vol <= .3 && vol > 0) {
+      wave1.style.opacity = .5;
+      wave2.style.opacity = 0;
+      wave3.style.opacity = 0;
+    } else if(vol === 0) {
+      wave1.style.opacity = 0;
+      wave2.style.opacity = 0;
+      wave3.style.opacity = 0;
+    }
+  };
+
 
   // RETURNED PUBLIC FUNCTIONS
   return {
@@ -197,16 +227,21 @@ var UIController = (function() {
         if(!el.paused && el.volume >= .05) {
           el.volume = Math.round((el.volume - .05) * 100) / 100;
           console.log(el.volume);
+          speakerWaves(el.volume);
         }
       });
     },
 
-    volFull: function(calibTone) {
+    volFull: function(audio) {
       var audio;
 
-      audio = document.getElementById(calibTone);
+      audio = document.getElementById(audio);
 
       audio.volume = 1;
+
+      if(document.querySelector('.stage-calib')) {
+        speakerWaves(1);
+      }
     },
 
     volUp: function() {
@@ -219,6 +254,7 @@ var UIController = (function() {
         if(!el.paused && el.volume <= .95) {
           el.volume = Math.round((el.volume + .05) * 100) / 100;
           console.log(el.volume);
+          speakerWaves(el.volume);
         }
       });
     }
