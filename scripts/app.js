@@ -403,15 +403,19 @@ var controller = (function(dataCtrl, UICtrl) {
     ctrlToneNext();
   };
 
-  var ctrlSetStepResults = function() {
-    UICtrl.setStage('stageResults', 1);
-
-
-  };
-
   var ctrlSetStepSpeechTest = function() {
     UICtrl.setStage('stageSpeechTest', 4);
     UICtrl.setProgBubbles(1);
+  };
+
+  var ctrlSetStepResults = function() {
+    UICtrl.setStage('stageResults', 1);
+
+    // quiz results
+    // calib results
+    // tone results
+    // speech results
+    // cta
   };
 
 

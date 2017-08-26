@@ -25,6 +25,12 @@ ag purple:  #532d6d
 GLOBAL STYLES
 *********************************/
 
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing:    border-box;
+  box-sizing:         border-box;
+}
+
 body {
   font-family: 'Open Sans';
 }
@@ -149,6 +155,42 @@ LAYOUT ELEMENTS
   font-size: 1.5em;
   margin: 0;
   width: 15%;
+}
+
+.results-row:after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+.results-col {
+  float: left;
+  padding: 1rem;
+  width: 25%;
+}
+
+.results-quiz {
+  background: #b6d8e4;
+}
+
+.results-calib {
+  background: #e6f0f4;
+}
+
+.results-tone {
+  background: #b9aac8;
+}
+
+.results-speech {
+  background: #ece9f5;
+}
+
+.results-cta {
+  background: #532d6d;
+  color: #fff;
+  margin: 1rem;
+  padding: .5rem 1rem;
+  text-align: center;
 }
 
 
