@@ -54,6 +54,7 @@ LAYOUT ELEMENTS
   box-shadow: 0 .2rem 1rem #666;
   height: 30rem;
   left: 50%;
+  overflow-y: auto;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -165,6 +166,7 @@ LAYOUT ELEMENTS
 
 .results-col {
   float: left;
+  height: 20rem;
   padding: 1rem;
   width: 25%;
 }
@@ -188,7 +190,7 @@ LAYOUT ELEMENTS
 .results-cta {
   background: #532d6d;
   color: #fff;
-  margin: 1rem;
+  margin: 2rem;
   padding: .5rem 1rem;
   text-align: center;
 }
@@ -271,6 +273,12 @@ OBJECT ELEMENTS
 .active-freq {
   color: #008aab;
   font-weight: 700;
+}
+
+.results-head {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0;
 }
 
 

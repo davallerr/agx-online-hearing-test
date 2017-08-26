@@ -182,6 +182,11 @@ var UIController = (function() {
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
     },
 
+    showResultsQuiz: function(data) {
+      // receives quiz answers object and displays info
+      document.querySelector('.results-quiz').innerHTML = 'quiz results bruh';
+    },
+
     volDown: function() {
       var audios, audiosArray;
 
@@ -409,13 +414,21 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepResults = function() {
-    UICtrl.setStage('stageResults', 1);
+    var data;
 
-    // quiz results
-    // calib results
-    // tone results
-    // speech results
-    // cta
+    UICtrl.setStage('stageResults', 1);
+    data = dataCtrl.getResults();
+
+    // show quiz results
+    UICtrl.showResultsQuiz(data.quiz);
+
+    // show calib results
+
+    // show tone results
+
+    // show speech results
+
+    // show cta
   };
 
 
