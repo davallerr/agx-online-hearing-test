@@ -105,7 +105,7 @@ var UIController = (function() {
       wave1.style.opacity = 1;
       wave2.style.opacity = 1;
       wave3.style.opacity = 1;
-    } else if(vol <= 1 && vol > .65) {
+    } else if(vol <= 1 && vol > .65) { 
       wave1.style.opacity = 1;
       wave2.style.opacity = 1;
       wave3.style.opacity = .5;
@@ -122,7 +122,7 @@ var UIController = (function() {
       wave2.style.opacity = 0;
       wave3.style.opacity = 0;
     }
-  };
+  }; 
 
 
   // RETURNED PUBLIC FUNCTIONS
