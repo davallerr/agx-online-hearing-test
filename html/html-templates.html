@@ -37,9 +37,9 @@
 
         <div class="steps">
           <div class="step-1">Quiz</div>
-          <div class="step-2">Sound Callibration</div>
-          <div class="step-3">Tone Test</div>
-          <div class="step-4">Speech Test</div>
+          <div class="step-2">Tone Test</div>
+          <div class="step-3">Speech Test</div>
+          <div class="step-4">Results</div>
         </div>
 
         <div class="prog-bar">
@@ -71,12 +71,13 @@
 
         <div class="steps">
           <div class="step-1">Quiz</div>
-          <div class="step-2">Sound Callibration</div>
-          <div class="step-3">Tone Test</div>
-          <div class="step-4">Speech Test</div>
+          <div class="step-2">Tone Test</div>
+          <div class="step-3">Speech Test</div>
+          <div class="step-4">Results</div>
         </div>
 
         <div class="prog-bar">
+          <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
@@ -97,76 +98,6 @@
     </div>
 
 
-    <!-- SOUND CALIBRATION -->
-
-    <div class="stage-calib">
-      <div class="header">
-        <img class="agx-hearing-logo logo-stages" src="./img/AGX-Hearing-Logo-Horizontal.png" />
-
-        <div class="steps">
-          <div class="step-1">Quiz</div>
-          <div class="step-2">Sound Callibration</div>
-          <div class="step-3">Tone Test</div>
-          <div class="step-4">Speech Test</div>
-        </div>
-
-        <div class="prog-bar">
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-        </div>
-      </div>
-
-      <div class="calib-body">
-        <p class="lead-text">Adjust the volume using the <span class="vol-text">+</span> and <span class="vol-text">&ndash;</span> buttons until you can barely hear the tone.</p>
-
-        <div class="calib-ui">
-          <div class="calib-side-l">
-            <div class="calib-tone-l-high active-calib-tone">High</div>
-            <div class="calib-label-l active-calib-label">Left</div>
-            <div class="calib-tone-l-low">Low</div>
-          </div>
-
-          <div class="calib-vol">
-            <div class="icon-speaker">
-              <div class="icon-speaker-base">
-                <div class="icon-speaker-rect"></div>
-                <div class="icon-speaker-cone"></div>
-              </div>
-              <div class="icon-speaker-waves">
-                <div class="icon-speaker-wave-1"></div>
-                <div class="icon-speaker-wave-2"></div>
-                <div class="icon-speaker-wave-3"></div>
-              </div>
-            </div>
-
-            <div class="vol-icons">
-              <button class="vol-plus">+</button>
-              <button class="vol-minus">&ndash;</button>
-            </div>
-          </div>
-
-          <div class="calib-side-r">
-            <div class="calib-tone-r-high">High</div>
-            <div class="calib-label-r">Right</div>
-            <div class="calib-tone-r-low">Low</div>
-          </div>
-        </div>
-
-        <button class="btn-submit-calib">Set Volume</button>
-
-        <div class="calib-tones">
-          <audio id="audio-calib-l-high" loop="true" src="../sounds/5000-L.wav"></audio>
-          <audio id="audio-calib-l-low" loop="true" src="../sounds/100-L.wav"></audio>
-          <audio id="audio-calib-r-high" loop="true" src="../sounds/5000-R.wav"></audio>
-          <audio id="audio-calib-r-low" loop="true" src="../sounds/100-R.wav"></audio>
-        </div>
-      </div>
-    </div>
-
-
     <!-- TONE TEST -->
 
     <div class="stage-tone-test">
@@ -175,12 +106,13 @@
 
         <div class="steps">
           <div class="step-1">Quiz</div>
-          <div class="step-2">Sound Callibration</div>
-          <div class="step-3">Tone Test</div>
-          <div class="step-4">Speech Test</div>
+          <div class="step-2">Tone Test</div>
+          <div class="step-3">Speech Test</div>
+          <div class="step-4">Results</div>
         </div>
 
         <div class="prog-bar">
+          <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
           <div class="prog-bubble"></div>
@@ -224,9 +156,9 @@
 
         <div class="steps">
           <div class="step-1">Quiz</div>
-          <div class="step-2">Sound Callibration</div>
-          <div class="step-3">Tone Test</div>
-          <div class="step-4">Speech Test</div>
+          <div class="step-2">Tone Test</div>
+          <div class="step-3">Speech Test</div>
+          <div class="step-4">Results</div>
         </div>
 
         <div class="prog-bar">
@@ -264,29 +196,21 @@
         <div class="results-row">
           <div class="results-col results-quiz">
             <p class="results-head">Hearing Quiz</p>
-            <p class="quiz-total">3/6</p>
+            <p class="quiz-total">%quizTotal%</p>
             
             <div class="quiz-environments">
               <p>You may be struggling to hear in some environments.</p>
             </div>
           </div>
-          
-          <div class="results-col results-calib">
-            <p class="results-head">Sound Calibration</p>
-            <div class="calib-total">
-              <div class="result-l-high"></div>
-              <div class="result-l-low"></div>
-              <div class="result-r-high"></div>
-              <div class="result-r-low"></div>
-            </div>
-          </div>
 
           <div class="results-col results-tone">
             <p class="results-head">Tone Test</p>
+            <p class="tone-total">%toneTotal%</p>
           </div>
 
           <div class="results-col results-speech">
             <p class="results-head">Speech Test</p>
+            <p class="speech-total">%speechTotal%</p>
           </div>
         </div>
 

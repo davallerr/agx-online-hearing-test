@@ -24,7 +24,6 @@ var dataController = (function() {
   };
 
   var results = {
-    calibration: {},
     quiz: {},
     speechTest: {},
     toneTest: {}
@@ -46,24 +45,12 @@ var dataController = (function() {
       return Object.keys(results[stage]).length + 1;
     },
 
-    setCalibSetting: function(q, vol) {
-      var settings;
-
-      settings = ['leftHigh', 'leftLow', 'rightHigh', 'rightLow'];
-
-      results.calibration[settings[q-2]] = vol;
-    },
-
     setQuizResponse: function(q, response) {
       results.quiz['q' + q] = response;
     },
 
     setToneResponse: function(freq, response) {
       results.toneTest[freq + 'Hz'] = response;
-    },
-
-    setVolumeResponse: function(set) {
-      results.calibration['localVolume'] = set;
     },
 
     testing: function() {
@@ -94,51 +81,12 @@ var UIController = (function() {
     stageVolume:      importHTML.querySelector('.stage-volume')
   };
 
-  var speakerWaves = function(vol) {
-    var wave1, wave2, wave3;
-
-    wave1 = document.querySelector('.icon-speaker-wave-1');
-    wave2 = document.querySelector('.icon-speaker-wave-2');
-    wave3 = document.querySelector('.icon-speaker-wave-3');
-
-    if(vol === 1 ) {
-      wave1.style.opacity = 1;
-      wave2.style.opacity = 1;
-      wave3.style.opacity = 1;
-    } else if(vol <= 1 && vol > .65) {
-      wave1.style.opacity = 1;
-      wave2.style.opacity = 1;
-      wave3.style.opacity = .5;
-    } else if(vol <= .65 && vol > .3) {
-      wave1.style.opacity = 1;
-      wave2.style.opacity = .5;
-      wave3.style.opacity = 0;
-    } else if(vol <= .3 && vol > 0) {
-      wave1.style.opacity = .5;
-      wave2.style.opacity = 0;
-      wave3.style.opacity = 0;
-    } else if(vol === 0) {
-      wave1.style.opacity = 0;
-      wave2.style.opacity = 0;
-      wave3.style.opacity = 0;
-    }
-  };
-
 
   // RETURNED PUBLIC FUNCTIONS
   return {
 
     addClass: function(el, nodeNum, newClass) {
       document.querySelectorAll(el)[nodeNum].classList.add(newClass);
-    },
-
-    getCalibSetting: function(q) {
-      var audio, vol;
-
-      // current step determines what audio to target
-      audio = document.getElementsByTagName('audio')[q-2];
-      // identify and return current volume of audio
-      return audio.volume;
     },
 
     getYesNoResponse: function(event) {
@@ -166,16 +114,6 @@ var UIController = (function() {
       audio = document.getElementById(id);
       audio.currentTime = 0;
       audio.play();
-    },
-
-    setCalibLabel: function(tone, side) {
-      // remove current active labels
-      document.querySelector('.active-calib-tone').classList.remove('active-calib-tone');
-      document.querySelector('.active-calib-label').classList.remove('active-calib-label');
-
-      // set new active labels
-      document.querySelector(tone).classList.add('active-calib-tone');
-      document.querySelector(side).classList.add('active-calib-label');
     },
 
     setFreqLabel: function(q) {
@@ -214,22 +152,18 @@ var UIController = (function() {
 
     showResultsQuiz: function(data) {
       // receives quiz answers object and displays info
-      document.querySelector('.results-quiz').innerHTML = 'quiz results bruh';
+      console.log('trying quiz');
+      document.querySelector('.quiz-total').textContent = document.querySelector('.quiz-total').textContent.replace('%quizTotal%', '3/6');
     },
 
-    volDown: function() {
-      var audios, audiosArray;
+    showResultsSpeechTest: function(data) {
+      console.log('trying speech');
+      document.querySelector('.speech-total').textContent = document.querySelector('.speech-total').textContent.replace('%speechTotal%', 'SOMETHING');
+    },
 
-      audios = document.getElementsByTagName('audio');
-      audiosArray = Array.prototype.slice.call(audios);
-
-      audiosArray.forEach(function(el) {
-        if(!el.paused && el.volume >= .05) {
-          el.volume = Math.round((el.volume - .05) * 100) / 100;
-          console.log(el.volume);
-          speakerWaves(el.volume);
-        }
-      });
+    showResultsToneTest: function(data) {
+      console.log('trying tone');
+      document.querySelector('.tone-total').textContent = document.querySelector('.tone-total').textContent.replace('%toneTotal%', 'Another thing');
     },
 
     volFull: function(audio) {
@@ -242,21 +176,6 @@ var UIController = (function() {
       if(document.querySelector('.stage-calib')) {
         speakerWaves(1);
       }
-    },
-
-    volUp: function() {
-      var audios, audiosArray;
-
-      audios = document.getElementsByTagName('audio');
-      audiosArray = Array.prototype.slice.call(audios);
-
-      audiosArray.forEach(function(el) {
-        if(!el.paused && el.volume <= .95) {
-          el.volume = Math.round((el.volume + .05) * 100) / 100;
-          console.log(el.volume);
-          speakerWaves(el.volume);
-        }
-      });
     }
 
   };
@@ -325,90 +244,11 @@ var controller = (function(dataCtrl, UICtrl) {
 
     UICtrl.playTone('noise');
 
-    document.querySelector('.btn-submit-volume').addEventListener('click', ctrlVolumeResponse);
-  };
-
-  var ctrlVolumeResponse = function() {
-    dataCtrl.setVolumeResponse('set');
-    ctrlSetStepCalib();
-  };
-
-  var ctrlSetStepCalib = function() {
-    // set stage to calibration
-    UICtrl.setStage('stageCalib', 2);
-    UICtrl.setProgBubbles(1);
-
-    // add listeners to +/- buttons
-    document.querySelector('.vol-plus').addEventListener('click', UICtrl.volUp);
-    document.querySelector('.vol-minus').addEventListener('click', UICtrl.volDown);
-
-    // add listener to set volume button
-    document.querySelector('.btn-submit-calib').addEventListener('click', ctrlCalibResponse);
-
-    // go to tone set function
-    ctrlCalibNext();
-  };
-
-  var ctrlCalibNext = function() {
-    var audio, q, sideLabel, toneLabel;
-
-    q = dataCtrl.getResponseNum('calibration');
-
-    if(q < 6) {
-      // set current progress bubble and play appropriate tone
-      // account for global volume step
-      UICtrl.setProgBubbles(q);
-
-      // determine which tone/side user is on
-      switch(q) {
-        case 2:
-          audio =     'audio-calib-l-high';
-          sideLabel = '.calib-label-l';
-          toneLabel = '.calib-tone-l-high';
-          break;
-        case 3:
-          audio =     'audio-calib-l-low';
-          sideLabel = '.calib-label-l';
-          toneLabel = '.calib-tone-l-low';
-          break;
-        case 4:
-          audio =     'audio-calib-r-high';
-          sideLabel = '.calib-label-r';
-          toneLabel = '.calib-tone-r-high';
-          break;
-        case 5:
-          audio =     'audio-calib-r-low';
-          sideLabel = '.calib-label-r';
-          toneLabel = '.calib-tone-r-low';
-          break;
-        default:
-          console.log('need a default');
-          console.log('q: ' + q);
-      }
-
-      // sets tone and side label and plays appropriate tone
-      UICtrl.setCalibLabel(toneLabel, sideLabel);
-      UICtrl.playTone(audio);
-      UICtrl.volFull(audio);
-    } else {
-      ctrlSetStepToneTest();
-    }
-  };
-
-  var ctrlCalibResponse = function() {
-    var q, vol, volRound;
-
-    q = dataCtrl.getResponseNum('calibration');
-    vol = UICtrl.getCalibSetting(q);
-    volRound = vol.toFixed(1);
-
-    dataCtrl.setCalibSetting(q, volRound);
-
-    ctrlCalibNext();
+    document.querySelector('.btn-submit-volume').addEventListener('click', ctrlSetStepToneTest);
   };
 
   var ctrlSetStepToneTest = function() {
-    UICtrl.setStage('stageToneTest', 3);
+    UICtrl.setStage('stageToneTest', 2);
     UICtrl.setProgBubbles(1);
 
     document.querySelector('.btns-yn').addEventListener('click', ctrlToneResponse);
@@ -423,7 +263,7 @@ var controller = (function(dataCtrl, UICtrl) {
     q = dataCtrl.getResponseNum('toneTest');
 
     if(q < 6) {
-      UICtrl.setProgBubbles(q);
+      UICtrl.setProgBubbles(q + 1);
       UICtrl.setFreqLabel(q - 1);
       UICtrl.playTone(freqs[q - 1]);
       UICtrl.volFull(freqs[q - 1]);
@@ -445,7 +285,7 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepSpeechTest = function() {
-    UICtrl.setStage('stageSpeechTest', 4);
+    UICtrl.setStage('stageSpeechTest', 3);
     UICtrl.setProgBubbles(1);
   };
 
@@ -458,11 +298,11 @@ var controller = (function(dataCtrl, UICtrl) {
     // show quiz results
     UICtrl.showResultsQuiz(data.quiz);
 
-    // show calib results
-
     // show tone results
+    UICtrl.showResultsToneTest(data.toneTest);
 
     // show speech results
+    UICtrl.showResultsSpeechTest(data.speechTest);
 
     // show cta
   };
