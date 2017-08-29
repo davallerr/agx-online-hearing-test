@@ -106,6 +106,7 @@ LAYOUT ELEMENTS
 .active-step {
   background: #008aab;
   color: #fff;
+  font-weight: 700;
   padding: .5rem 0;
 }
 
@@ -176,12 +177,8 @@ LAYOUT ELEMENTS
   background: #b6d8e4;
 }
 
-.results-calib {
-  background: #e6f0f4;
-}
-
 .results-tone {
-  background: #b9aac8;
+  background: #e6f0f4;
 }
 
 .results-speech {
@@ -278,6 +275,7 @@ OBJECT ELEMENTS
 
 .results-head {
   font-size: 1.3em;
+  font-weight: 700;
   margin: 0;
   text-align: center;
 }
