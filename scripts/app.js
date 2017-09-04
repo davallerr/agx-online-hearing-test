@@ -152,18 +152,18 @@ var UIController = (function() {
 
     showResultsQuiz: function(data) {
       // receives quiz answers object and displays info
-      console.log('trying quiz');
       document.querySelector('.quiz-total').textContent = document.querySelector('.quiz-total').textContent.replace('%quizTotal%', '3/6');
+      console.log(data);
     },
 
     showResultsSpeechTest: function(data) {
-      console.log('trying speech');
       document.querySelector('.speech-total').textContent = document.querySelector('.speech-total').textContent.replace('%speechTotal%', 'SOMETHING');
+      console.log(data);
     },
 
     showResultsToneTest: function(data) {
-      console.log('trying tone');
       document.querySelector('.tone-total').textContent = document.querySelector('.tone-total').textContent.replace('%toneTotal%', 'Another thing');
+      console.log(data);
     },
 
     volFull: function(audio) {
