@@ -14,17 +14,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 var dataController = (function() {
 
-  var quizQuestions = {
-    q1: 'Do you have trouble keeping up with conversations in busy restaurants?',
-    q2: 'Are you often told that you set the television volume too loud?',
-    q3: 'Do you have a hard time hearing people over the phone?',
-    q4: 'Are you sometimes like, "these women and children need to SPEAK UP" and stuff?',
-    q5: 'Are you accused of being intentionally thick by your significant other when you ask them to repeat themselves, say 5 or 6 times?',
-    q6: 'Can you think of anymore hearing questions?'
+  var quiz = {
+    questions: {
+      q0: 'Do you have difficulty understanding people with higher speaking voices?',
+      q1: 'Do you have a hard time understanding people over the phone?',
+      q2: 'Do you have trouble keeping up with conversations in busy restaurants?',
+      q3: 'Are you often told that you set the television volume very loud?'
+    },
+    score: 0,
+    topics: ['highVoices', 'phone', 'restaurants', 'television']
   };
 
   var results = {
     quiz: {},
+    quizScore: 0,
+    quizTopics: [],
     speechTest: {},
     toneTest: {}
   };
@@ -33,8 +37,8 @@ var dataController = (function() {
   // RETURNED PUBLIC FUNCTIONS
   return {
 
-    setQuizQuestion: function(q) {
-      return quizQuestions[q];
+    getQuizTopics: function() {
+      return quiz.topics;
     },
 
     getResults: function() {
@@ -42,15 +46,26 @@ var dataController = (function() {
     },
 
     getResponseNum: function(stage) {
-      return Object.keys(results[stage]).length + 1;
+      return Object.keys(results[stage]).length;
+    },
+
+    setQuizQuestion: function(q) {
+      return quiz.questions[q];
     },
 
     setQuizResponse: function(q, response) {
-      results.quiz['q' + q] = response;
+      var topic = quiz.topics[q];
+
+      results.quiz[topic] = response;
+
+      if(response) {
+        results.quizScore++;
+        results.quizTopics.push(topic);
+      }
     },
 
     setToneResponse: function(freq, response) {
-      results.toneTest[freq + 'Hz'] = response;
+      results.toneTest[freq] = response;
     },
 
     testing: function() {
@@ -128,7 +143,7 @@ var UIController = (function() {
     },
 
     setProgBubbles: function(current) {
-      document.querySelectorAll('.prog-bubble')[current - 1].classList.add('prog-current');
+      document.querySelectorAll('.prog-bubble')[current].classList.add('prog-current');
     },
 
     setStage: function(el, step) {
@@ -150,10 +165,20 @@ var UIController = (function() {
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
     },
 
-    showResultsQuiz: function(data) {
-      // receives quiz answers object and displays info
-      document.querySelector('.quiz-total').textContent = document.querySelector('.quiz-total').textContent.replace('%quizTotal%', '3/6');
-      console.log(data);
+    showResultsQuiz: function(score, topics) {
+      // receives score and topics then displays info
+      var scoreDisplay, topicHtml;
+
+      scoreDisplay = score + '/4';
+      
+      document.querySelector('.quiz-total').textContent = document.querySelector('.quiz-total').textContent.replace('%quizTotal%', scoreDisplay);
+
+      topicHtmlTemplate = importHTML.querySelector('.environment').outerHTML;
+
+      for(var i=0; i<topics.length; i++) {
+        topicHtml = topicHtmlTemplate.replace('%environment%', topics[i]);
+        document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', topicHtml);
+      }
     },
 
     showResultsSpeechTest: function(data) {
@@ -212,11 +237,12 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlQuizNextQ = function() {
     // check quiz question number and either set next question or finish quiz
-    var q;
+    var q, topics;
 
     q = dataCtrl.getResponseNum('quiz');
+    topics = dataCtrl.getQuizTopics();
 
-    if(q < 7) {
+    if(q < topics.length) {
       // set current progress bubble and question text
       UICtrl.setProgBubbles(q);
       document.querySelector('.quiz-question-text').textContent = dataCtrl.setQuizQuestion('q' + q);
@@ -240,7 +266,7 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepVolume = function() {
     UICtrl.setStage('stageVolume', 2);
-    UICtrl.setProgBubbles(1);
+    UICtrl.setProgBubbles(0);
 
     UICtrl.playTone('noise');
 
@@ -249,7 +275,7 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepToneTest = function() {
     UICtrl.setStage('stageToneTest', 2);
-    UICtrl.setProgBubbles(1);
+    UICtrl.setProgBubbles(0);
 
     document.querySelector('.btns-yn').addEventListener('click', ctrlToneResponse);
 
@@ -262,11 +288,11 @@ var controller = (function(dataCtrl, UICtrl) {
     freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
     q = dataCtrl.getResponseNum('toneTest');
 
-    if(q < 6) {
+    if(q < 5) {
       UICtrl.setProgBubbles(q + 1);
-      UICtrl.setFreqLabel(q - 1);
-      UICtrl.playTone(freqs[q - 1]);
-      UICtrl.volFull(freqs[q - 1]);
+      UICtrl.setFreqLabel(q);
+      UICtrl.playTone(freqs[q]);
+      UICtrl.volFull(freqs[q]);
     } else {
       ctrlSetStepResults();
     }
@@ -279,7 +305,7 @@ var controller = (function(dataCtrl, UICtrl) {
     q = dataCtrl.getResponseNum('toneTest');
     response = UICtrl.getYesNoResponse(event);
 
-    dataCtrl.setToneResponse(freqs[q - 1], response);
+    dataCtrl.setToneResponse(freqs[q], response);
 
     ctrlToneNext();
   };
@@ -296,7 +322,7 @@ var controller = (function(dataCtrl, UICtrl) {
     data = dataCtrl.getResults();
 
     // show quiz results
-    UICtrl.showResultsQuiz(data.quiz);
+    UICtrl.showResultsQuiz(data.quizScore, data.quizTopics);
 
     // show tone results
     UICtrl.showResultsToneTest(data.toneTest);

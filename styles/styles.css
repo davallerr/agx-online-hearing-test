@@ -273,6 +273,12 @@ OBJECT ELEMENTS
   font-weight: 700;
 }
 
+.quiz-total {
+  color: #532d6d;
+  font-size: 2em;
+  font-weight: 700;
+}
+
 .results-head {
   font-size: 1.3em;
   font-weight: 700;
