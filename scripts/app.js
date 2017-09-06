@@ -21,21 +21,27 @@ var dataController = (function() {
       q2: 'Do you have trouble keeping up with conversations in busy restaurants?',
       q3: 'Are you often told that you set the television volume very loud?'
     },
-    score: 0,
-    topics: ['highVoices', 'phone', 'restaurants', 'television']
+    topics: ['High Voices', 'Phone', 'Restaurants', 'Television']
   };
+
+  var frequencies = ['2000hz', '4000hz', '6000hz', '8000hz', '10000hz'];
 
   var results = {
     quiz: {},
     quizScore: 0,
     quizTopics: [],
     speechTest: {},
-    toneTest: {}
+    toneTest: {},
+    toneTestScore: 0
   };
 
 
   // RETURNED PUBLIC FUNCTIONS
   return {
+
+    getFrequencies: function() {
+      return frequencies;
+    },
 
     getQuizTopics: function() {
       return quiz.topics;
@@ -66,6 +72,10 @@ var dataController = (function() {
 
     setToneResponse: function(freq, response) {
       results.toneTest[freq] = response;
+
+      if(response) {
+        results.toneTestScore++;
+      }
     },
 
     testing: function() {
@@ -131,12 +141,7 @@ var UIController = (function() {
       audio.play();
     },
 
-    setFreqLabel: function(q) {
-      var freqs;
-
-      // array of frequency classes
-      freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
-
+    setFreqLabel: function(q, freqs) {
       // remove existing active label and set new one
       document.querySelector('.active-freq').classList.remove('active-freq');
       document.querySelector('.freq-' + freqs[q]).classList.add('active-freq');
@@ -165,37 +170,46 @@ var UIController = (function() {
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
     },
 
-    showResultsQuiz: function(score, topics) {
+    showResultsQuiz: function(score, outOf, topics) {
       // receives score and topics then displays info
-      var scoreDisplay, topicHtml;
+      var scoreDisplay;
 
-      scoreDisplay = score + '/4';
+      scoreDisplay = score + '/' + outOf;
       
-      document.querySelector('.quiz-total').textContent = document.querySelector('.quiz-total').textContent.replace('%quizTotal%', scoreDisplay);
+      document.querySelector('.score-quiz').textContent = document.querySelector('.score-quiz').textContent.replace('%quizTotal%', scoreDisplay);
 
-      topicHtmlTemplate = importHTML.querySelector('.environment').outerHTML;
+      if(topics.length > 0) {
+        var introP, topicHtml, topicHtmlTemplate;
 
-      for(var i=0; i<topics.length; i++) {
-        topicHtml = topicHtmlTemplate.replace('%environment%', topics[i]);
-        document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', topicHtml);
+        introP = importHTML.querySelector('.environments-intro').outerHTML;
+        topicHtmlTemplate = importHTML.querySelector('.environment').outerHTML;
+
+        document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', introP);
+  
+        for(var i=0; i<topics.length; i++) {
+          topicHtml = topicHtmlTemplate.replace('%environment%', topics[i]);
+          document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', topicHtml);
+        }
       }
     },
 
     showResultsSpeechTest: function(data) {
-      document.querySelector('.speech-total').textContent = document.querySelector('.speech-total').textContent.replace('%speechTotal%', 'SOMETHING');
+      document.querySelector('.score-speech').textContent = document.querySelector('.score-speech').textContent.replace('%speechTotal%', 'What Up');
       console.log(data);
     },
 
-    showResultsToneTest: function(data) {
-      document.querySelector('.tone-total').textContent = document.querySelector('.tone-total').textContent.replace('%toneTotal%', 'Another thing');
-      console.log(data);
+    showResultsToneTest: function(score, outOf) {
+      var scoreDisplay;
+
+      scoreDisplay = score + '/' + outOf;
+
+      document.querySelector('.score-tone').textContent = document.querySelector('.score-tone').textContent.replace('%toneTotal%', scoreDisplay);
     },
 
     volFull: function(audio) {
       var audio;
 
       audio = document.getElementById(audio);
-
       audio.volume = 1;
 
       if(document.querySelector('.stage-calib')) {
@@ -285,12 +299,12 @@ var controller = (function(dataCtrl, UICtrl) {
   var ctrlToneNext = function() {
     var freqs, q;
 
-    freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
+    freqs = dataCtrl.getFrequencies();
     q = dataCtrl.getResponseNum('toneTest');
 
-    if(q < 5) {
+    if(q < freqs.length) {
       UICtrl.setProgBubbles(q + 1);
-      UICtrl.setFreqLabel(q);
+      UICtrl.setFreqLabel(q, freqs);
       UICtrl.playTone(freqs[q]);
       UICtrl.volFull(freqs[q]);
     } else {
@@ -301,7 +315,7 @@ var controller = (function(dataCtrl, UICtrl) {
   var ctrlToneResponse = function(event) {
     var freqs, q, response;
 
-    freqs = ['14000hz', '14500hz', '14800hz', '15000hz', '16000hz'];
+    freqs = dataCtrl.getFrequencies();
     q = dataCtrl.getResponseNum('toneTest');
     response = UICtrl.getYesNoResponse(event);
 
@@ -316,16 +330,18 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepResults = function() {
-    var data;
+    var data, quizLength, toneTestLength;
 
     UICtrl.setStage('stageResults', 1);
     data = dataCtrl.getResults();
+    quizLength = Object.keys(data.quiz).length;
+    toneTestLength = Object.keys(data.toneTest).length;
 
     // show quiz results
-    UICtrl.showResultsQuiz(data.quizScore, data.quizTopics);
+    UICtrl.showResultsQuiz(data.quizScore, quizLength, data.quizTopics);
 
     // show tone results
-    UICtrl.showResultsToneTest(data.toneTest);
+    UICtrl.showResultsToneTest(data.toneTestScore, toneTestLength);
 
     // show speech results
     UICtrl.showResultsSpeechTest(data.speechTest);

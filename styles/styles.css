@@ -21,9 +21,9 @@ ag purple:  #532d6d
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
 
 
-/*********************************
+/******************************************************************
 GLOBAL STYLES
-*********************************/
+******************************************************************/
 
 * {
   -webkit-box-sizing: border-box;
@@ -45,9 +45,9 @@ h1, h2, h3, h4, h5, h6 {
 sup { font-size: 50%; }
 
 
-/*********************************
+/******************************************************************
 LAYOUT ELEMENTS
-*********************************/
+******************************************************************/
 
 .quiz-window {
   background: #fff;
@@ -156,7 +156,31 @@ LAYOUT ELEMENTS
   display: inline-block;
   font-size: 1.5em;
   margin: 0;
+  vertical-align: middle;
   width: 15%;
+}
+
+.freq-2000hz  { background: #e6f0f4;  height: 2.5rem;  padding-top: .2rem }
+.freq-4000hz  { background: #e6f0f4;  height: 3rem;    padding-top: .45rem }
+.freq-6000hz  { background: #e6f0f4;  height: 3.5rem;  padding-top: .7rem }
+.freq-8000hz  { background: #e6f0f4;  height: 4rem;    padding-top: .95rem }
+.freq-10000hz { background: #e6f0f4;  height: 4.5rem;  padding-top: 1.2rem }
+
+.results-summary {
+  background: #532d6d;
+  color: #fff;
+  font-size: 1.5em;
+  margin: 1rem;
+  padding: .2rem 1rem;
+  text-align: center;
+}
+
+.results-summary p {
+  margin: .5rem 0;
+}
+
+.results-row {
+  margin: .8rem;
 }
 
 .results-row:after {
@@ -166,37 +190,33 @@ LAYOUT ELEMENTS
 }
 
 .results-col {
-  float: left;
-  height: 20rem;
-  padding: 1rem;
-  width: 33.33333333%;
-  width: calc(100% / 3);
-}
-
-.results-quiz {
-  background: #b6d8e4;
-}
-
-.results-tone {
   background: #e6f0f4;
-}
-
-.results-speech {
-  background: #ece9f5;
-}
-
-.results-cta {
-  background: #532d6d;
-  color: #fff;
-  margin: 2rem;
-  padding: .5rem 1rem;
+  float: left;
+  height: 25rem;
+  margin: .2rem;
+  padding: 1rem;
   text-align: center;
+  width: calc((100% / 3) - .4rem);
+}
+
+.score {
+  background: #fff;
+  border-radius: 100%;
+  height: 6rem;
+  margin: 1rem auto 0 auto;
+  padding: 0;
+  position: relative;
+  width: 6rem;
+}
+
+.quiz-environments {
+  margin-top: 1.5rem;
 }
 
 
-/*********************************
+/******************************************************************
 OBJECT ELEMENTS
-*********************************/
+******************************************************************/
 
 .calib-body {
   margin: 2rem auto;
@@ -269,27 +289,45 @@ OBJECT ELEMENTS
 }
 
 .active-freq {
-  color: #008aab;
+  background: #b6d8e4;
+  color: #532d6d;
   font-weight: 700;
 }
 
-.quiz-total {
+[class*='score-'] {
   color: #532d6d;
-  font-size: 2em;
+  font-size: 2.2em;
   font-weight: 700;
+  left: 50%;
+  letter-spacing: .1em;
+  line-height: 105%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .results-head {
+  color: #008aab;
   font-size: 1.3em;
   font-weight: 700;
   margin: 0;
-  text-align: center;
+}
+
+.environments-intro {
+  font-size: 1.2em;
+  margin: 1rem 0 0 0;
+}
+
+.environment {
+  font-size: 1.2em;
+  margin: .5rem 0;
 }
 
 
-/*********************************
+/******************************************************************
 BUTTONS
-*********************************/
+******************************************************************/
 
 [class*='btn-submit-'] {
   background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
@@ -300,7 +338,7 @@ BUTTONS
   font-size: 1.2em;
   font-weight: 200;
   letter-spacing: .05em;
-  margin: 2rem auto;
+  margin: 5.5rem auto 0 auto;
   min-width: 12rem;
   outline: none;
   padding: .5rem 1.5rem;
@@ -311,7 +349,7 @@ BUTTONS
 }
 
 .btns-yn {
-  bottom: 10%;
+  bottom: 5%;
   left: 50%;
   margin: .5rem auto;
   position: absolute;
@@ -358,9 +396,9 @@ BUTTONS
 .vol-plus:active  { top: .1rem; }
 
 
-/*********************************
+/******************************************************************
 SPEAKER ICON
-*********************************/
+******************************************************************/
 
 .icon-speaker {
   position: absolute;

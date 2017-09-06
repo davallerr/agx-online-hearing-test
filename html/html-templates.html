@@ -123,11 +123,11 @@
         <p class="lead-text">Do you hear the tone playing?</p>
 
         <div class="tone-test-frequencies">
-          <p class="freq-14000Hz active-freq">Tone 1</p>
-          <p class="freq-14500Hz">Tone 2</p>
-          <p class="freq-14800Hz">Tone 3</p>
-          <p class="freq-15000Hz">Tone 4</p>
-          <p class="freq-16000Hz">Tone 5</p>
+          <p class="freq-2000hz active-freq">Tone 1</p>
+          <p class="freq-4000hz">Tone 2</p>
+          <p class="freq-6000hz">Tone 3</p>
+          <p class="freq-8000hz">Tone 4</p>
+          <p class="freq-10000hz">Tone 5</p>
         </div>
 
         <div class="btns-yn">
@@ -136,11 +136,11 @@
         </div>
 
         <div class="tone-test-tones">
-          <audio id="14000hz" src="../sounds/14000.wav"></audio>
-          <audio id="14500hz" src="../sounds/14500.wav"></audio>
-          <audio id="14800hz" src="../sounds/14800.wav"></audio>
-          <audio id="15000hz" src="../sounds/15000.wav"></audio>
-          <audio id="16000hz" src="../sounds/16000.wav"></audio>
+          <audio id="2000hz" src="../sounds/14000.wav"></audio>
+          <audio id="4000hz" src="../sounds/14500.wav"></audio>
+          <audio id="6000hz" src="../sounds/14800.wav"></audio>
+          <audio id="8000hz" src="../sounds/15000.wav"></audio>
+          <audio id="10000hz" src="../sounds/16000.wav"></audio>
         </div>
       </div>
     </div>
@@ -191,33 +191,41 @@
       </div>
 
       <div class="results-body">
+        <div class="results-summary">
+          <p>A summary of your online hearing test results.</p>
+        </div>
+
         <div class="results-row">
           <div class="results-col results-quiz">
             <p class="results-head">Hearing Quiz</p>
-            <p class="quiz-total">%quizTotal%</p>
-            
-            <div class="quiz-environments">
-              <p>You may be struggling to hear in some environments.</p>
+
+            <div class="score">
+              <div class="score-quiz">%quizTotal%</div>
             </div>
+            
+            <div class="quiz-environments"></div>
           </div>
 
           <div class="results-col results-tone">
             <p class="results-head">Tone Test</p>
-            <p class="tone-total">%toneTotal%</p>
+
+            <div class="score">
+              <div class="score-tone">%toneTotal%</div>
+            </div>
           </div>
 
           <div class="results-col results-speech">
             <p class="results-head">Speech Test</p>
-            <p class="speech-total">%speechTotal%</p>
-          </div>
-        </div>
 
-        <div class="results-cta">
-          <p>CALL TO ACTION Y'ALL</p>
+            <div class="score">
+              <div class="score-speech">%speechTotal%</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
+    <p class="environments-intro"><strong>You may be struggling to hear in some environments.</strong></p>
     <p class="environment">%environment%</p>
 
 
