@@ -349,6 +349,20 @@ var controller = (function(dataCtrl, UICtrl) {
     // show cta
   };
 
+  var ctrlCalcResults = function() {
+    var data, strings, summary;
+
+    data = dataCtrl.getResults();
+
+    strings = {
+      aNoVisit: 'No visit: Your hearing seems to be in the healthy range, but regular visits to your audiologist are still super cool.',
+      bModerate: 'Moderate: It looks like you may have some level of hearing loss. Contact us to start your journey to better hearing.',
+      cSevere: ' Severe: It looks like you may have a significant level of hearing loss. Contact us to start your journey to better hearing'
+    }
+    
+    // calculate combination of scores to determine summary given
+  }
+
 
 
   // RETURNED PUBLIC FUNCTIONS
