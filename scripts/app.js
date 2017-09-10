@@ -31,6 +31,7 @@ var dataController = (function() {
     quizScore: 0,
     quizTopics: [],
     speechTest: {},
+    speechTestScore: 0,
     toneTest: {},
     toneTestScore: 0
   };
@@ -195,7 +196,10 @@ var UIController = (function() {
 
     showResultsSpeechTest: function(data) {
       document.querySelector('.score-speech').textContent = document.querySelector('.score-speech').textContent.replace('%speechTotal%', 'What Up');
-      console.log(data);
+    },
+
+    showResultsSummary: function(str) {
+      document.querySelector('.results-summary').textContent = str;
     },
 
     showResultsToneTest: function(score, outOf) {
@@ -337,6 +341,9 @@ var controller = (function(dataCtrl, UICtrl) {
     quizLength = Object.keys(data.quiz).length;
     toneTestLength = Object.keys(data.toneTest).length;
 
+    // show summary
+    ctrlCalcResults();
+
     // show quiz results
     UICtrl.showResultsQuiz(data.quizScore, quizLength, data.quizTopics);
 
@@ -345,12 +352,10 @@ var controller = (function(dataCtrl, UICtrl) {
 
     // show speech results
     UICtrl.showResultsSpeechTest(data.speechTest);
-
-    // show cta
   };
 
   var ctrlCalcResults = function() {
-    var data, strings, summary;
+    var data, strings, summary, totalScore;
 
     data = dataCtrl.getResults();
 
@@ -361,6 +366,16 @@ var controller = (function(dataCtrl, UICtrl) {
     }
     
     // calculate combination of scores to determine summary given
+    totalScore = data.quizScore + data.toneTestScore + data.speechTestScore;
+    console.log(totalScore);
+
+    if(totalScore > 5) {
+      UICtrl.showResultsSummary(strings.cSevere);
+    } else if(totalScore > 0) {
+      UICtrl.showResultsSummary(strings.bModerate);
+    } else {
+      UICtrl.showResultsSummary(strings.aNoVisit);
+    }
   }
 
 
