@@ -8,23 +8,20 @@
 
   <body>
 
-
-    <!-- --------------------------------------- -->
-    <!-- STAGES -->
-    <!-- --------------------------------------- -->
-
     <!-- INTRO -->
 
     <div class="stage-intro">
       <div class="header">
         <img class="agx-hearing-logo logo-intro" src="./img/AGX-Hearing-Logo-Horizontal.png" />
-        <h1 class="header-text">AGX<sup>&reg;</sup> Online Hearing Test</h1>
+        <h1>AGX<sup>&reg;</sup> Online Hearing Test</h1>
       </div>
 
       <div class="intro-body">
-        <p class="lead-text">Some intro text for the quizzy quiz</p>
-        <button class="btn-submit-intro">Take the Test</button>
+        <p class="lead-text">Is it time to talk to an audiologist?</p>
+        <p class="lead-text">This online hearing test can help identify problem areas in your hearing health.</p>
       </div>
+
+      <button class="btn-submit-intro">Take the Test</button>
     </div>
 
 
@@ -52,11 +49,11 @@
 
       <div class="quiz-body">
         <p class="quiz-question-text"></p>
+      </div>
 
-        <div class="btns-yn">
-          <button class="btn-yn-yes">Yes</button>
-          <button class="btn-yn-no">No</button>
-        </div>
+      <div class="btns-yn">
+        <button class="btn-yn-yes">Yes</button>
+        <button class="btn-yn-no">No</button>
       </div>
     </div>
 
@@ -87,11 +84,12 @@
       <div class="volume-body">
         <p class="lead-text">Adjust the volume on your computer so the noise plays at a comfortable level.</p>
         <p class="lead-text">Please do not adjust your computer volume after this step.</p>
-        <button class="btn-submit-volume">Set Volume</button>
+      </div>
 
-        <div class="vol-tones">
-          <audio id="noise" loop="true" src="../sounds/noise.wav"></audio>
-        </div>
+      <button class="btn-submit-volume">Set Volume</button>
+      
+      <div class="vol-tones">
+        <audio id="noise" loop="true" src="../sounds/noise.wav"></audio>
       </div>
     </div>
 
@@ -129,19 +127,19 @@
           <p class="freq-8000hz">Tone 4</p>
           <p class="freq-10000hz">Tone 5</p>
         </div>
+      </div>
 
-        <div class="btns-yn">
-          <button class="btn-yn-yes">Yes</button>
-          <button class="btn-yn-no">No</button>
-        </div>
+      <div class="btns-yn">
+        <button class="btn-yn-yes">Yes</button>
+        <button class="btn-yn-no">No</button>
+      </div>
 
-        <div class="tone-test-tones">
-          <audio id="2000hz" src="../sounds/14000.wav"></audio>
-          <audio id="4000hz" src="../sounds/14500.wav"></audio>
-          <audio id="6000hz" src="../sounds/14800.wav"></audio>
-          <audio id="8000hz" src="../sounds/15000.wav"></audio>
-          <audio id="10000hz" src="../sounds/16000.wav"></audio>
-        </div>
+      <div class="tone-test-tones">
+        <audio id="2000hz" src="../sounds/14000.wav"></audio>
+        <audio id="4000hz" src="../sounds/14500.wav"></audio>
+        <audio id="6000hz" src="../sounds/14800.wav"></audio>
+        <audio id="8000hz" src="../sounds/15000.wav"></audio>
+        <audio id="10000hz" src="../sounds/16000.wav"></audio>
       </div>
     </div>
 

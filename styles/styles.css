@@ -18,7 +18,7 @@ ag purple:  #532d6d
 --shade:    #3d214f
 */
 
-@import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700|Open+Sans:300,300i,700,700i');
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif:400,700|Open+Sans:400,700');
 
 
 /******************************************************************
@@ -42,6 +42,8 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
 }
 
+h1 { font-size: 2.3em; }
+
 sup { font-size: 50%; }
 
 
@@ -61,8 +63,14 @@ LAYOUT ELEMENTS
   width: 50rem;
 }
 
+[class*='stage-'] {
+  height: 100%;
+  padding: 1rem;
+  position: relative;
+}
+
 .header {
-  margin: 1rem auto;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -82,7 +90,7 @@ LAYOUT ELEMENTS
 
 .lead-text, .quiz-question-text {
   font-size: 1.2em;
-  margin: .5rem 2rem;
+  margin: .5rem 1rem;
   text-align: center;
 }
 
@@ -94,7 +102,7 @@ LAYOUT ELEMENTS
 
 .steps {
   height: 2rem;
-  margin: 1rem auto;
+  margin: 1rem auto .5rem auto;
 }
 
 [class*='step-'] {
@@ -134,14 +142,8 @@ LAYOUT ELEMENTS
   background: #532d6d;
 }
 
-.quiz-body {
-  margin: 3rem auto;
-}
-
-.volume-body {
-  margin: 3rem auto;
-}
-
+.quiz-body,
+.volume-body,
 .tone-test-body {
   margin: 3rem auto;
 }
@@ -169,14 +171,13 @@ LAYOUT ELEMENTS
 .results-summary {
   background: #ece9f5;
   font-size: 1.2em;
-  font-weight: 700;
-  margin: 1rem;
+  margin: 1rem 0;
   padding: .8rem 1rem;
   text-align: center;
 }
 
 .results-row {
-  margin: .8rem;
+  margin: .8rem 0;
 }
 
 .results-row:after {
@@ -189,10 +190,14 @@ LAYOUT ELEMENTS
   background: #e6f0f4;
   float: left;
   height: 25rem;
-  margin: .2rem;
+  margin-right: .4rem;
   padding: 1rem;
   text-align: center;
-  width: calc((100% / 3) - .4rem);
+  width: calc((100% / 3) - .275rem);
+}
+
+.results-col:last-of-type {
+  margin-right: 0;
 }
 
 .score {
@@ -293,8 +298,7 @@ OBJECT ELEMENTS
 
 [class*='score-'] {
   color: #532d6d;
-  font-size: 2.2em;
-  font-weight: 700;
+  font-size: 2.3em;
   left: 50%;
   letter-spacing: .1em;
   line-height: 105%;
@@ -330,15 +334,18 @@ BUTTONS
   background: linear-gradient(to right, #874fb2 0%, #008aab 100%);
   border: none;
   border-radius: 10rem;
+  bottom: 5rem;
   color: #fff;
   display: block;
   font-size: 1.2em;
   font-weight: 200;
+  left: 50%;
   letter-spacing: .05em;
-  margin: 5.5rem auto 0 auto;
   min-width: 12rem;
   outline: none;
   padding: .5rem 1.5rem;
+  position: absolute;
+  transform: translate(-50%, -50%);
 }
 
 [class*='btn-submit-']:hover {
@@ -346,9 +353,9 @@ BUTTONS
 }
 
 .btns-yn {
-  bottom: 5%;
+  bottom: 5rem;
   left: 50%;
-  margin: .5rem auto;
+  margin: 0 auto;
   position: absolute;
   text-align: center;
   transform: translate(-50%, -50%);
@@ -361,7 +368,7 @@ BUTTONS
   font-size: 1.2em;
   font-weight: 200;
   letter-spacing: .05em;
-  margin: 2rem .5rem;
+  margin: 0 .5rem;
   outline: none;
   padding: .5rem 2rem;
   width: 8rem;

@@ -334,40 +334,39 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepResults = function() {
-    var data, quizLength, toneTestLength;
+    var results, quizLength, toneTestLength;
 
     UICtrl.setStage('stageResults', 1);
-    data = dataCtrl.getResults();
-    quizLength = Object.keys(data.quiz).length;
-    toneTestLength = Object.keys(data.toneTest).length;
+    results = dataCtrl.getResults();
+    quizLength = Object.keys(results.quiz).length;
+    toneTestLength = Object.keys(results.toneTest).length;
 
     // show summary
     ctrlCalcResults();
 
     // show quiz results
-    UICtrl.showResultsQuiz(data.quizScore, quizLength, data.quizTopics);
+    UICtrl.showResultsQuiz(results.quizScore, quizLength, results.quizTopics);
 
     // show tone results
-    UICtrl.showResultsToneTest(data.toneTestScore, toneTestLength);
+    UICtrl.showResultsToneTest(results.toneTestScore, toneTestLength);
 
     // show speech results
-    UICtrl.showResultsSpeechTest(data.speechTest);
+    UICtrl.showResultsSpeechTest(results.speechTest);
   };
 
   var ctrlCalcResults = function() {
-    var data, strings, summary, totalScore;
+    var results, strings, summary, totalScore;
 
-    data = dataCtrl.getResults();
+    results = dataCtrl.getResults();
 
     strings = {
       aNoVisit: 'No visit: Your hearing seems to be in the healthy range, but regular visits to your audiologist are still super cool.',
       bModerate: 'Moderate: It looks like you may have some level of hearing loss. Contact us to start your journey to better hearing.',
-      cSevere: ' Severe: It looks like you may have a significant level of hearing loss. Contact us to start your journey to better hearing'
+      cSevere: ' Severe: It looks like you may have a significant level of hearing loss. Contact us to start your journey to better hearing.'
     }
     
     // calculate combination of scores to determine summary given
-    totalScore = data.quizScore + data.toneTestScore + data.speechTestScore;
-    console.log(totalScore);
+    totalScore = results.quizScore + results.toneTestScore + results.speechTestScore;
 
     if(totalScore > 5) {
       UICtrl.showResultsSummary(strings.cSevere);
@@ -376,7 +375,7 @@ var controller = (function(dataCtrl, UICtrl) {
     } else {
       UICtrl.showResultsSummary(strings.aNoVisit);
     }
-  }
+  };
 
 
 
