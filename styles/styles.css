@@ -177,7 +177,7 @@ LAYOUT ELEMENTS
 }
 
 .results-row {
-  margin: .8rem 0;
+  margin: 1rem 0;
 }
 
 .results-row:after {
@@ -212,7 +212,7 @@ LAYOUT ELEMENTS
 }
 
 .quiz-environments {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 
 
@@ -317,12 +317,12 @@ OBJECT ELEMENTS
 
 .environments-intro {
   font-size: 1.2em;
-  margin: 1rem 0 0 0;
+  margin: 1rem 0 1rem 0;
 }
 
 .environment {
-  font-size: 1.2em;
-  margin: .5rem 0;
+  font-size: 1em;
+  margin: 1rem 0;
 }
 
 

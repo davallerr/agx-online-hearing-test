@@ -1,17 +1,22 @@
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NOTES
 /*
 
+Needs speech test integration
+
+Best display of results - what to include
+
+Summary/CTA - link to schedule appointment, how to send results to member
 
 */
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // DATA CONTROLLER
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var dataController = (function() {
 
   var quiz = {
@@ -21,7 +26,12 @@ var dataController = (function() {
       q2: 'Do you have trouble keeping up with conversations in busy restaurants?',
       q3: 'Are you often told that you set the television volume very loud?'
     },
-    topics: ['High Voices', 'Phone', 'Restaurants', 'Television']
+    topics: [
+      'Understanding high voices', 
+      'Talking on the phone',
+      'Conversations in restaurants',
+      'Watching television'
+    ]
   };
 
   var frequencies = ['2000hz', '4000hz', '6000hz', '8000hz', '10000hz'];
@@ -88,11 +98,11 @@ var dataController = (function() {
 })();
 
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // UI CONTROLLER
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var UIController = (function() {
 
   var importHTML = document.querySelector('link[id="html-templates"]').import;
@@ -111,11 +121,8 @@ var UIController = (function() {
   // RETURNED PUBLIC FUNCTIONS
   return {
 
-    addClass: function(el, nodeNum, newClass) {
-      document.querySelectorAll(el)[nodeNum].classList.add(newClass);
-    },
-
     getYesNoResponse: function(event) {
+      // return true or false for y/n response
       if(event.target.className === 'btn-yn-yes') {
         return true;
       } else if(event.target.className === 'btn-yn-no') {
@@ -124,6 +131,7 @@ var UIController = (function() {
     },
 
     playTone: function(id) {
+      // identify all audio tags and play one with provided id
       var allAudio, allAudioArray, audio;
 
       // create array of all present audio tags
@@ -149,13 +157,16 @@ var UIController = (function() {
     },
 
     setProgBubbles: function(current) {
+      // receive current step and style prog bubbles
       document.querySelectorAll('.prog-bubble')[current].classList.add('prog-current');
     },
 
     setStage: function(el, step) {
+      // clear quiz window, populate HTML block for provided step
       document.querySelector('.quiz-window').innerHTML = '';
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements[el]);
 
+      // set current step at top of window
       if(document.querySelector('.step-1')) {
         document.querySelector('.step-' + step).classList.add('active-step');
         
@@ -168,25 +179,29 @@ var UIController = (function() {
     },
 
     setStageIntro: function() {
+      // set initial stage
       document.querySelector('.quiz-window').insertAdjacentElement('afterbegin', importElements.stageIntro);
     },
 
     showResultsQuiz: function(score, outOf, topics) {
-      // receives score and topics then displays info
+      // receives quiz score and topics then displays info
       var scoreDisplay;
 
       scoreDisplay = score + '/' + outOf;
       
       document.querySelector('.score-quiz').textContent = document.querySelector('.score-quiz').textContent.replace('%quizTotal%', scoreDisplay);
 
+      // show environments that user responsed yes to in quiz
       if(topics.length > 0) {
         var introP, topicHtml, topicHtmlTemplate;
 
+        // get html blocks from import and transform to editable strings
         introP = importHTML.querySelector('.environments-intro').outerHTML;
         topicHtmlTemplate = importHTML.querySelector('.environment').outerHTML;
 
         document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', introP);
   
+        // use provided topics array to display environments user has trouble hearing in
         for(var i=0; i<topics.length; i++) {
           topicHtml = topicHtmlTemplate.replace('%environment%', topics[i]);
           document.querySelector('.quiz-environments').insertAdjacentHTML('beforeend', topicHtml);
@@ -195,14 +210,17 @@ var UIController = (function() {
     },
 
     showResultsSpeechTest: function(data) {
+      // receives speech score and displays
       document.querySelector('.score-speech').textContent = document.querySelector('.score-speech').textContent.replace('%speechTotal%', 'What Up');
     },
 
     showResultsSummary: function(str) {
+      // receives summary string to display based on score
       document.querySelector('.results-summary').textContent = str;
     },
 
     showResultsToneTest: function(score, outOf) {
+      // receives tone test score, number of tones tested, and displays it
       var scoreDisplay;
 
       scoreDisplay = score + '/' + outOf;
@@ -211,14 +229,11 @@ var UIController = (function() {
     },
 
     volFull: function(audio) {
+      // sets provided audio id to full volume
       var audio;
 
       audio = document.getElementById(audio);
       audio.volume = 1;
-
-      if(document.querySelector('.stage-calib')) {
-        speakerWaves(1);
-      }
     }
 
   };
@@ -226,11 +241,11 @@ var UIController = (function() {
 })();
 
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // APP CONTROLLER
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepIntro = function() {
@@ -283,6 +298,8 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepVolume = function() {
+    // volume step: play noise for user to set to comfortable level
+
     UICtrl.setStage('stageVolume', 2);
     UICtrl.setProgBubbles(0);
 
@@ -292,6 +309,8 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepToneTest = function() {
+    // tone test step: set stage and add event listeners, then go to tone check
+
     UICtrl.setStage('stageToneTest', 2);
     UICtrl.setProgBubbles(0);
 
@@ -301,6 +320,7 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlToneNext = function() {
+    // check which tone to check next, or go to next step
     var freqs, q;
 
     freqs = dataCtrl.getFrequencies();
@@ -317,6 +337,7 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlToneResponse = function(event) {
+    // check response y/n and add to results data, then go to next tone
     var freqs, q, response;
 
     freqs = dataCtrl.getFrequencies();
@@ -329,11 +350,13 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlSetStepSpeechTest = function() {
+    // TO BE INSERTED
     UICtrl.setStage('stageSpeechTest', 3);
     UICtrl.setProgBubbles(1);
   };
 
   var ctrlSetStepResults = function() {
+    // set step results: set stage, retrieve results, calculate summary, show results
     var results, quizLength, toneTestLength;
 
     UICtrl.setStage('stageResults', 1);
@@ -355,14 +378,15 @@ var controller = (function(dataCtrl, UICtrl) {
   };
 
   var ctrlCalcResults = function() {
+    // calculate summary based on results data
     var results, strings, summary, totalScore;
 
     results = dataCtrl.getResults();
 
     strings = {
-      aNoVisit: 'No visit: Your hearing seems to be in the healthy range, but regular visits to your audiologist are still super cool.',
-      bModerate: 'Moderate: It looks like you may have some level of hearing loss. Contact us to start your journey to better hearing.',
-      cSevere: ' Severe: It looks like you may have a significant level of hearing loss. Contact us to start your journey to better hearing.'
+      aNoVisit:   'No visit: Your hearing seems to be in the healthy range, but regular visits to your audiologist are still super cool.',
+      bModerate:  'Moderate: It looks like you may have some level of hearing loss. Contact us to start your journey to better hearing.',
+      cSevere:    'Severe: It looks like you may have a significant level of hearing loss. Contact us to start your journey to better hearing.'
     }
     
     // calculate combination of scores to determine summary given
@@ -383,7 +407,6 @@ var controller = (function(dataCtrl, UICtrl) {
   return {
 
     init: function() {
-      console.log('init');
       ctrlSetStepIntro();
     }
 
@@ -392,7 +415,7 @@ var controller = (function(dataCtrl, UICtrl) {
 })(dataController, UIController);
 
 
-///////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MAKE IT GO
 controller.init();
