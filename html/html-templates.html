@@ -152,32 +152,45 @@
 
         <div class="steps">
           <div class="step-1">Quiz</div>
-          <div class="step-2">Tone Test</div>
-          <div class="step-3">Speech Test</div>
-          <div class="step-4">Results</div>
+          <div class="step-2">Sound Callibration</div>
+          <div class="step-3">Tone Test</div>
+          <div class="step-4">Speech Test</div>
         </div>
 
-        <div class="prog-bar">
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
-          <div class="prog-bubble"></div>
+                  <div class="prog-bubble" id='box1'></div>
+          <div class="prog-bubble" id='box2'></div>
+          <div class="prog-bubble" id='box3'></div>
+          
         </div>
-      </div>
+      
 
       <div class="speech-test-body">
-        <p class="lead-text">Speech test, bruv</p>
-
-        <div class="speech-test-tones">
-          <audio id="" src=""></audio>
-          <audio id="" src=""></audio>
-          <audio id="" src=""></audio>
-          <audio id="" src=""></audio>
-          <audio id="" src=""></audio>
+        <p class="lead-text">Click on the words you hear spoken</p>
+        <div class="answerGrid">
+        <div class="calib-tone-1">
+            <button class='speechBtn' id='ans1'>One</button>
+            <button class='speechBtn' id='ans2'>Two</button>
+            <button class='speechBtn' id='ans3'>Three</button>
+            
         </div>
-      </div>
+        <div class="calib-tone-2">
+            <button class='speechBtn' id='ans4'>Four</button>
+            <button class='speechBtn' id='ans5'>Five</button>
+            <button class='speechBtn' id='ans6'>Six</button>
+        </div>
+        <div class="calib-tone-3">
+            <button class='speechBtn' id='ans7'>Seven</button>
+            <button class='speechBtn' id='ans8'>Eight</button>
+            <button class='speechBtn' id='ans9'>Nine</button>
+        </div>
+        </div>
+        <div class="calib-tone-3">
+        <button class="btn-yn-yes" id="toneAnswer">Start Test</button>
+        
     </div>
+       
+    </div>
+</div>
 
 
     <!-- RESULTS -->

@@ -325,6 +325,9 @@ OBJECT ELEMENTS
   margin: 1rem 0;
 }
 
+[id*='ans']{
+    display: inline-block;
+}
 
 /******************************************************************
 BUTTONS
@@ -378,7 +381,30 @@ BUTTONS
 .btn-yn-no  { background: #b9aac8;  color: #555; }
 
 .btn-yn-yes:hover { background: #3d214f; }
-.btn-yn-no:hover  { background: #afa0bd; }
+.btn-yn-no:hover, .speechBtn:hover  { background: #afa0bd; }
+.speechBtn:active {
+    background: #3d214f;
+    color: #fff;
+}
+
+.speechBtn {
+    margin: .25rem;
+    padding: .35rem;
+    border: none;
+  border-radius: 10rem;
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 200;
+  letter-spacing: .05em;
+  outline: none;
+  width: 8rem;
+}
+
+#toneAnswer{
+    margin-top: .25rem;
+    width: 10rem;
+    padding: .5rem;
+}
 
 .vol-icons button {
   background: #532d6d;
@@ -471,3 +497,4 @@ SPEAKER ICON
   height: 100%;
   right: 0;
 }
+
