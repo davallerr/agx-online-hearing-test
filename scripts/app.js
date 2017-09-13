@@ -56,8 +56,7 @@ counters = {
     
 speechQuiz = {
     quizType: {
-        speech: ['bells', 'cat', 'king', 'hand', 'cars', 'tree', 'dog', 'book', 'chair'],
-        num: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
+        speech: ['Bells', 'Cat', 'King', 'Hand', 'Cars', 'Tree', 'Dog', 'Book', 'Chair']
     },
     questions: [],
     questionsOrder: [],
@@ -99,9 +98,9 @@ function loadRandomOrder() {
         };
         
         // 3. Save answers which correlate to the numbers generated
-        answer1 = speechQuiz.questions[num1];
-        answer2 = speechQuiz.questions[num2];
-        answer3 = speechQuiz.questions[num3];
+        answer1 = speechQuiz.questions[num1].toLowerCase();
+        answer2 = speechQuiz.questions[num2].toLowerCase();
+        answer3 = speechQuiz.questions[num3].toLowerCase();
         
         // 4. Add three new answer strings to end of order array
         speechQuiz.questionsOrder.push(answer1);
@@ -288,7 +287,7 @@ function updateAnsHTML(ansArray){
     for (i = 0; i < 9; i++){
         
         // 1. Load string into cur variable
-        cur = ansArray[i];
+        cur = ansArray[i].toLowerCase();
         
         // 2. Temp number for non-zero based elements
         tempNum = i + 1;
@@ -298,7 +297,7 @@ function updateAnsHTML(ansArray){
        
         
         // 4. Add answer text inside answer divs
-        document.querySelector('#' + cur).innerHTML = '<p>' + cur + '</p>';
+        document.querySelector('#' + cur).innerHTML = '<p>' + ansArray[i] + '</p>';
     };
 };
     
@@ -745,6 +744,7 @@ function audioLoop(){
     
     // 3. Set audio volume
     UICtrl.backgroundAud.volume = dataCtrl.counters.volumeCounter;
+    
 };
 
 // app        
@@ -783,12 +783,14 @@ function playRoundAudio(){
     // 4. Play the 3 audio clips
     playAudio(audio1, audio2, audio3);
     
+    
+    
     /* !!! volControl code for lowering audio each time: audio3.volume = (1 - dataCtrl.counters.curRound * .05);*/
 };
 
 // app        
 function answerInput(){
-    
+   
     // 1. Create and add new answer obj
     dataCtrl.addNewAnswer();
     
@@ -800,6 +802,7 @@ function answerInput(){
     
     // 4. Load next question and play audio
     loadNextQuestion();
+
 }; 
 
 // app        
@@ -816,7 +819,8 @@ function speechInit(ansArray){
     dataCtrl.loadRandomOrder();
 
     // 4. Add event listeners
-   
+    UICtrl.backgroundAud.volume = 0;
+   UICtrl.backgroundAud.play();
     document.querySelector('#toneAnswer').addEventListener('click', function(){
          document.querySelector('.answerGrid').addEventListener('click', answerInput);
         askQuestion();
@@ -835,14 +839,19 @@ function askQuestion(){
         // 2. Update background noise volume
         updateVolume();
         
-    } else if (dataCtrl.counters.curRound >= 4 && dataCtrl.counters.curRound < 8) {
-       document.querySelector('#toneAnswer').removeEventListener('click', function(){
+    } else if (dataCtrl.counters.curRound >= 5 && dataCtrl.counters.curRound < 8) {
+        document.querySelector('#toneAnswer').removeEventListener('click', function(){
          document.querySelector('.answerGrid').addEventListener('click', answerInput);
         askQuestion();
     }); 
     ctrlSetStepSpeechTest(dataCtrl.speechQuiz.quizType.num);
     } else {
         console.log('quizDone');
+        pauseAudio();
+        
+        // 2. Calculate Total Wrong
+       dataCtrl.howWell(); console.log(dataCtrl.testResults.speech.totalRight);
+       // 3. load next stage
     }
     
     // Update curRound counter
