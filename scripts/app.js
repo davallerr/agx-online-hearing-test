@@ -71,7 +71,7 @@ counters = {
     
 speechQuiz = {
     quizType: {
-        speech: ['Bells', 'Cat', 'King', 'Hand', 'Cars', 'Tree', 'Dog', 'Book', 'Chair']
+        speech: ['Bean', 'Chalk', 'Goose', 'Kite', 'Moon', 'Page', 'Puff', 'Shout', 'Take']
     },
     questions: [],
     questionsOrder: [],
@@ -712,7 +712,9 @@ function loadNextQuestion(){
     
 // Play the 3 audio files
 function playAudio(aud1, aud2, aud3){
-    
+    aud1.volume = 1;
+    aud2.volume = 1;
+    aud3.volume = 1;
     // 1. Play first
     aud1.play();
     
@@ -752,7 +754,7 @@ function updateVolume(){
     if(dataCtrl.counters.volumeCounter <= .8){
         
         // 1. Increase volume counter by .2
-        dataCtrl.increaseVolumeCounter(.2);
+        dataCtrl.increaseVolumeCounter(.1);
         
         // 2. Update audio with new volume level
         UICtrl.backgroundAud.volume = dataCtrl.counters.volumeCounter;
