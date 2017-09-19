@@ -2,11 +2,12 @@
 // NOTES
 /*
 
-Needs speech test integration
-
 Best display of results - what to include
 
 Summary/CTA - link to schedule appointment, how to send results to member
+
+SPEECH TEST
+clicking on white space registers as wrong answer
 
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
