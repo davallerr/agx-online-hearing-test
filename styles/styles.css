@@ -1,5 +1,5 @@
 /* FONTS
-arno pro (noto serif placeholder)
+noto serif
 open sans
 */
 
@@ -54,13 +54,11 @@ LAYOUT ELEMENTS
 .quiz-window {
   background: #fff;
   box-shadow: 0 .2rem 1rem #666;
-  height: 30rem;
   left: 50%;
   overflow-y: auto;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 50rem;
 }
 
 [class*='stage-'] {
@@ -155,18 +153,15 @@ LAYOUT ELEMENTS
 }
 
 .tone-test-frequencies p {
-  display: inline-block;
   font-size: 1.5em;
   margin: 0;
-  vertical-align: middle;
-  width: 15%;
 }
 
-.freq-2000hz  { background: #e6f0f4;  height: 2.5rem;  padding-top: .2rem }
-.freq-4000hz  { background: #e6f0f4;  height: 3rem;    padding-top: .45rem }
-.freq-6000hz  { background: #e6f0f4;  height: 3.5rem;  padding-top: .7rem }
-.freq-8000hz  { background: #e6f0f4;  height: 4rem;    padding-top: .95rem }
-.freq-10000hz { background: #e6f0f4;  height: 4.5rem;  padding-top: 1.2rem }
+.freq-2000hz  { background: #e6f0f4 }
+.freq-4000hz  { background: #e6f0f4 }
+.freq-6000hz  { background: #e6f0f4 }
+.freq-8000hz  { background: #e6f0f4 }
+.freq-10000hz { background: #e6f0f4 }
 
 .results-summary {
   background: #ece9f5;
@@ -361,6 +356,7 @@ BUTTONS
   position: absolute;
   text-align: center;
   transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 [class*='btn-yn-'] {
@@ -381,6 +377,7 @@ BUTTONS
 
 .btn-yn-yes:hover { background: #3d214f; }
 .btn-yn-no:hover, .speechBtn:hover  { background: #afa0bd; }
+
 .speechBtn:active {
     background: #3d214f;
     color: #fff;
@@ -497,3 +494,49 @@ SPEAKER ICON
   right: 0;
 }
 
+
+
+/******************************************************************
+RESPONSIVE STYLES
+******************************************************************/
+
+@media (min-width: 200px) {
+
+  .quiz-window {
+    height: 80%;
+    max-height: 40rem;
+    width: 90%;
+  }
+
+  .tone-test-frequencies p {
+    display: block;
+    margin: .5rem auto;
+    text-align: center;
+    vertical-align: top;
+  }
+
+  .freq-2000hz  { height: 2.5rem; padding-top: .2rem; width: 6rem; }
+  .freq-4000hz  { height: 2.5rem; padding-top: .2rem; width: 7rem;  }
+  .freq-6000hz  { height: 2.5rem; padding-top: .2rem; width: 8rem;  }
+  .freq-8000hz  { height: 2.5rem; padding-top: .2rem; width: 9rem;  }
+  .freq-10000hz { height: 2.5rem; padding-top: .2rem; width: 10rem;  }
+}
+
+@media (min-width: 800px) {
+
+  .quiz-window {
+    height: 30rem;
+    width: 50rem;
+  }
+
+  .tone-test-frequencies p {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .freq-2000hz  { height: 2.5rem; padding-top: .2rem;  width: 15% }
+  .freq-4000hz  { height: 3rem;   padding-top: .45rem; width: 15% }
+  .freq-6000hz  { height: 3.5rem; padding-top: .7rem;  width: 15% }
+  .freq-8000hz  { height: 4rem;   padding-top: .95rem; width: 15% }
+  .freq-10000hz { height: 4.5rem; padding-top: 1.2rem; width: 15% }
+}
