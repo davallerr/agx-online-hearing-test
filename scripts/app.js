@@ -68,7 +68,8 @@ counters = {
     curRound: 0,
     totalAnswerCount: 0,
     answerCounter: 0,
-    volumeCounter: 0
+    volumeCounter: 0,
+    audioDone: false
 };
     
 speechQuiz = {
@@ -87,7 +88,14 @@ speechQuiz = {
 };
     
 //// FUNCTIONS ////
-
+function keyTest(){
+    console.log(Object.keys(speechQuiz));
+}
+// Set Audio Counter
+    function setAudioCounter(someBool){
+        counters.audioDone = someBool;
+    }
+    
 // Answer Object Constructor
 function Answer(question, id, parentId, volume) {
     this.question = question;
@@ -266,7 +274,9 @@ function updateAnswerCounter(num){
       addNewAnswer: addNewAnswer,
       howWell: howWell,
       addNewAnswer: addNewAnswer,
-      testResults: testResults
+      testResults: testResults,
+      setAudioCounter: setAudioCounter,
+      keyTest: keyTest
       
 // ...END //// SPEECH TEST Data Returns //////////////// M.M.
 
@@ -303,6 +313,32 @@ var backgroundAud = new Audio('../sounds/BackgroundNoise.mp3');
     
 //// FUNCTIONS ////
     
+    function listToArray(nodeList){
+        var tempList, newArray;
+        tempList = nodeList;
+        newArray = [];
+        console.log(newArray);
+        
+        for (i = 0; i < nodeList.length; i++){
+            newArray[i] = nodeList[i];
+        };
+        return newArray;
+    };
+    
+    // apply disabled to buttons
+    function disableButtons(someParentID, someBool, someOpacity){
+        var tempNodeList = document.querySelector(someParentID).children;
+    
+        var tempArray = listToArray(tempNodeList);
+        
+        tempArray.forEach(function(cur){
+            cur.disabled = someBool;
+            cur.opacity = someOpacity;
+        });
+    
+    };
+    
+    
 // Update html to match answers provided as arguments
 function updateAnsHTML(ansArray){
      console.log(document.querySelectorAll('#ans').id);
@@ -319,9 +355,11 @@ function updateAnsHTML(ansArray){
        
         
         // 4. Add answer text inside answer divs
-        document.querySelector('#' + cur).innerHTML = '<p>' + ansArray[i] + '</p>';
+        document.querySelector('#' + cur).innerHTML = ansArray[i];
     };
 };
+    
+    
     
 // Update Progress Bubbles
 function updateRoundProg(ansCounter){        
@@ -495,7 +533,8 @@ function audioString(someNum, someArray){
   function(el){
     el.classList.remove('prog-current');
   });
-    }
+    },
+      disableButtons: disableButtons
       
 // ...END //// SPEECH TEST UI Returns //////////////// M.M.
 
@@ -712,8 +751,27 @@ function loadNextQuestion(){
     };
 };
     
+    
+    function duringAudioUI(someKeyword){
+        
+        if(someKeyword === 'start'){
+        dataCtrl.setAudioCounter(false);
+    UICtrl.disableButtons('.calib-tone-1', true, .3);
+    UICtrl.disableButtons('.calib-tone-2', true, .3);
+    UICtrl.disableButtons('.calib-tone-3', true, .3);
+    } else if (someKeyword === 'end'){
+        dataCtrl.setAudioCounter(true);
+    UICtrl.disableButtons('.calib-tone-1', false, 1);
+    UICtrl.disableButtons('.calib-tone-2', false, 1);
+    UICtrl.disableButtons('.calib-tone-3', false, 1);
+    };
+        };
 // Play the 3 audio files
 function playAudio(aud1, aud2, aud3){
+    
+    //0. set Audio Counter to false to limit button input
+    duringAudioUI('start');
+    
     aud1.volume = 1;
     aud2.volume = 1;
     aud3.volume = 1;
@@ -728,6 +786,10 @@ function playAudio(aud1, aud2, aud3){
     // 3. After finished, start third
     aud2.onended = function(){
         aud3.play();
+    };
+    
+    aud3.onended = function(){
+        duringAudioUI('end');
     };
 };    
   
@@ -788,7 +850,8 @@ function playRoundAudio(){
 
 // app        
 function answerInput(){
-   
+   if(dataCtrl.counters.audioDone === true && dataCtrl.counters.answerCounter < 3){
+       
     // 1. Create and add new answer obj
     dataCtrl.addNewAnswer();
     
@@ -800,7 +863,7 @@ function answerInput(){
     
     // 4. Load next question and play audio
     loadNextQuestion();
-
+};
 }; 
 
 // app        
@@ -820,7 +883,12 @@ function speechInit(ansArray){
     UICtrl.backgroundAud.volume = 0;
    UICtrl.backgroundAud.play();
     document.querySelector('#toneAnswer').addEventListener('click', function(){
-         document.querySelector('.answerGrid').addEventListener('click', answerInput);
+         document.querySelector('.answerGrid').addEventListener('click', function(){
+             console.log(event.target.localName);
+             if(event.target.localName === 'button'){
+                 answerInput();
+             };
+         });
         askQuestion();
     });
 };
