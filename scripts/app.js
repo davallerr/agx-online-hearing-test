@@ -7,8 +7,7 @@ Best display of results - what to include
 Summary/CTA - link to schedule appointment, how to send results to member
 
 SPEECH TEST
-Clicking on white space registers as wrong answer
-Rounds are able to overlap if user clicks faster than audio
+Start test button can be pressed to skip round during test
 
 */
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -45,120 +44,121 @@ var dataController = (function() {
     speechTest: {},
     speechTestScore: 0,
     toneTest: {},
+    toneTestMissed: [],
     toneTestScore: 0
   };
 
-// START... //// SPEECH TEST //////////////// M.M.
+  // START... //// SPEECH TEST //////////////// M.M.
 
-//// VARIABLES ////
-    var testResults, counters, speechQuiz;
-    
-// Answer results object    
-testResults = {
+  //// VARIABLES ////
+  var testResults, counters, speechQuiz;
+      
+  // Answer results object    
+  testResults = {
     speech: {
-        totalRight: -1,
-        totalWrong: -1,
-        percentRight: -1,
-        percentWrong: -1
+      totalRight: -1,
+      totalWrong: -1,
+      percentRight: -1,
+      percentWrong: -1
     }
-};
+  };
 
-// Various Counter Obj    
-counters = {
+  // Various Counter Obj    
+  counters = {
     curRound: 0,
     totalAnswerCount: 0,
     answerCounter: 0,
     volumeCounter: 0,
     audioDone: false
-};
-    
-speechQuiz = {
+  };
+      
+  speechQuiz = {
     quizType: {
-        speech: ['Bean', 'Chalk', 'Goose', 'Kite', 'Moon', 'Page', 'Puff', 'Shout', 'Take']
+      speech: ['Bean', 'Chalk', 'Goose', 'Kite', 'Moon', 'Page', 'Puff', 'Shout', 'Take']
     },
     questions: [],
     questionsOrder: [],
     answers: [],
     results: {
-        totalRight: undefined,
-        totalWrong: undefined,
-        percentRight: undefined,
-        percentWrong: undefined
+      totalRight: undefined,
+      totalWrong: undefined,
+      percentRight: undefined,
+      percentWrong: undefined
     }
-};
-    
-//// FUNCTIONS ////
-function keyTest(){
+  };
+      
+  //// FUNCTIONS ////
+  function keyTest(){
     console.log(Object.keys(speechQuiz));
-}
-// Set Audio Counter
-    function setAudioCounter(someBool){
-        counters.audioDone = someBool;
-    }
-    
-// Answer Object Constructor
-function Answer(question, id, parentId, volume) {
+  }
+
+  // Set Audio Counter
+  function setAudioCounter(someBool){
+    counters.audioDone = someBool;
+  }
+      
+  // Answer Object Constructor
+  function Answer(question, id, parentId, volume) {
     this.question = question;
     this.id = id;
     this.parentId = parentId;
     this.volume = volume;
     this.isCorrect = (question === id || question === parentId);
-};    
+  };    
 
-function loadRandomOrder() {
-    
+  function loadRandomOrder() {
+      
     // Calculate 9 groups of 3 numbers
     for (i = 0; i < 9; i++){
-        var num1, num2, num3, answer1, answer2, answer3;
-        
-        // 1. Calculate numbers in groups of 3
-        num1 = Math.round(Math.random()*8);
+      var num1, num2, num3, answer1, answer2, answer3;
+          
+      // 1. Calculate numbers in groups of 3
+      num1 = Math.round(Math.random()*8);
+      num2 = Math.round(Math.random()*8);
+      num3 = Math.round(Math.random()*8);
+          
+          // 2. Prevent duplicates in groups
+      while (num1 === num2 || num2 === num3 || num1 === num3){
         num2 = Math.round(Math.random()*8);
         num3 = Math.round(Math.random()*8);
-        
-        // 2. Prevent duplicates in groups
-        while (num1 === num2 || num2 === num3 || num1 === num3){
-            num2 = Math.round(Math.random()*8);
-            num3 = Math.round(Math.random()*8);
-        };
-        
-        // 3. Save answers which correlate to the numbers generated
-        answer1 = speechQuiz.questions[num1].toLowerCase();
-        answer2 = speechQuiz.questions[num2].toLowerCase();
-        answer3 = speechQuiz.questions[num3].toLowerCase();
-        
-        // 4. Add three new answer strings to end of order array
-        speechQuiz.questionsOrder.push(answer1);
-        speechQuiz.questionsOrder.push(answer2);
-        speechQuiz.questionsOrder.push(answer3);
-        
+      };
+          
+      // 3. Save answers which correlate to the numbers generated
+      answer1 = speechQuiz.questions[num1].toLowerCase();
+      answer2 = speechQuiz.questions[num2].toLowerCase();
+      answer3 = speechQuiz.questions[num3].toLowerCase();
+          
+      // 4. Add three new answer strings to end of order array
+      speechQuiz.questionsOrder.push(answer1);
+      speechQuiz.questionsOrder.push(answer2);
+      speechQuiz.questionsOrder.push(answer3);
     };
-    
+      
     console.log(speechQuiz.questions);
-};
-    
-// Calculate results of questions, add to results object
-function howWell(){
+  };
+      
+  // Calculate results of questions, add to results object
+  function howWell(){
     var right, wrong, percentageRight, percentageWrong, num;
-    
+      
     right = 0;
     wrong = 0;
-        
+          
     // 1. update right and wrong totals for each answer
     speechQuiz.answers.forEach(function(cur){
-        
-        if (cur.isCorrect) {
-            right++;
-        } else if (!cur.isCorrect){
-            wrong++;
-        } else {
-            console.log('answers for each did not work here ' + cur);
-        }
+          
+      if (cur.isCorrect) {
+        right++;
+      } else if (!cur.isCorrect) {
+        wrong++;
+      } else {
+        console.log('answers for each did not work here ' + cur);
+      }
     });
-    
+      
     // 2. Establish the total number of answers
     num = speechQuiz.answers.length;
-    
+      
     // 3. Calculate percent right and wrong
     percentageRight = Math.round((right / num) * 100);
     percentageWrong = Math.round((wrong / num) * 100);
@@ -168,55 +168,54 @@ function howWell(){
     testResults.speech.totalWrong = wrong;
     testResults.speech.percentRight = percentageRight;
     testResults.speech.percentWrong = percentageWrong;
-    
+      
     // 5. Console log results
     console.log('Total right: ' + right);
     console.log('Total wrong: ' + wrong);
     console.log('Percent right: ' + percentageRight);
     console.log('Percent wrong: ' + percentageWrong);
-    
-};
+  };
 
-// Create and add new answer object to the end of answers array    
-function addNewAnswer(ansNum){
-    
+  // Create and add new answer object to the end of answers array    
+  function addNewAnswer(ansNum){
+      
     console.log(counters.totalAnswerCount);
     // 1. Create and push new answer obj
     speechQuiz.answers.push(new Answer(speechQuiz.questionsOrder[counters.totalAnswerCount], event.target.id, event.target.parentNode.id, Math.random()));
     counters.totalAnswerCount++;
-}; 
+  }; 
 
-// Load 9 new answers for speech test
-function updateAnswerOptions(newArray){
-    
+  // Load 9 new answers for speech test
+  function updateAnswerOptions(newArray){
+      
     // 1. Clear out any remaining answers
     speechQuiz.questions = [];
-    
+      
     // 2. Load new array into questions array
     newArray.forEach(function(cur){
-        speechQuiz.questions.push(cur);
+      speechQuiz.questions.push(cur);
     });
-};
-    
-//// Adjusting Counters Functions ////
-    
-// curRound    
-function increaseCurRound(){
+  };
+      
+  //// Adjusting Counters Functions ////
+      
+  // curRound    
+  function increaseCurRound(){
     counters.curRound++
     console.log('round updated');
-};
+  };
 
-// volumeCounter
-function increaseVolumeCounter(num){
+  // volumeCounter
+  function increaseVolumeCounter(num){
     counters.volumeCounter += num;
-};
-    
-// answerCounter    
-function updateAnswerCounter(num){
+  };
+      
+  // answerCounter    
+  function updateAnswerCounter(num){
     counters.answerCounter = num;
-};    
+  };    
 
-// ...END //// SPEECH TEST //////////////// M.M.
+  // ...END //// SPEECH TEST //////////////// M.M.
   // RETURNED PUBLIC FUNCTIONS
   return {
 
@@ -256,6 +255,10 @@ function updateAnswerCounter(num){
 
       if(response) {
         results.toneTestScore++;
+      }
+
+      if(response === false) {
+        results.toneTestMissed.push(freq);
       }
     },
 
@@ -504,13 +507,30 @@ function audioString(someNum, someArray){
       document.querySelector('.results-summary').textContent = str;
     },
 
-    showResultsToneTest: function(score, outOf) {
+    showResultsToneTest: function(score, outOf, tones) {
       // receives tone test score, number of tones tested, and displays it
       var scoreDisplay;
 
       scoreDisplay = score + '/' + outOf;
 
       document.querySelector('.score-tone').textContent = document.querySelector('.score-tone').textContent.replace('%toneTotal%', scoreDisplay);
+
+      // show tones not heard
+      if (score > 0) {
+        var toneHtml, toneHtmlTemplate;
+
+        // get html blocks from import and transform into editable strings
+        introP = importHTML.querySelector('.tones-intro').outerHTML;
+        toneHtmlTemplate = importHTML.querySelector('.missed-tone').outerHTML;
+
+        document.querySelector('.tone-freqs').insertAdjacentHTML('beforeend', introP);
+
+        // use provided tones array to display tones user couldn't hear
+        for(var i=0; i<tones.length; i++) {
+          toneHtml = toneHtmlTemplate.replace('%missedTone%', tones[i]);
+          document.querySelector('.tone-freqs').insertAdjacentHTML('beforeend', toneHtml);
+        }
+      }
     },
 
     volFull: function(audio) {
@@ -660,12 +680,13 @@ var controller = (function(dataCtrl, UICtrl) {
 
   var ctrlSetStepResults = function() {
     // set step results: set stage, retrieve results, calculate summary, show results
-    var results, quizLength, toneTestLength;
+    var missedTones, quizLength, results, toneTestLength;
 
     UICtrl.setStage('stageResults', 1);
     results = dataCtrl.getResults();
     quizLength = Object.keys(results.quiz).length;
     toneTestLength = Object.keys(results.toneTest).length;
+    missedTones = results.toneTestMissed;
 
     // show summary
     ctrlCalcResults();
@@ -674,7 +695,7 @@ var controller = (function(dataCtrl, UICtrl) {
     UICtrl.showResultsQuiz(results.quizScore, quizLength, results.quizTopics);
 
     // show tone results
-    UICtrl.showResultsToneTest(results.toneTestScore, toneTestLength);
+    UICtrl.showResultsToneTest(results.toneTestScore, toneTestLength, missedTones);
 
     // show speech results
     dataCtrl.howWell();

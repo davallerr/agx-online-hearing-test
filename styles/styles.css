@@ -197,7 +197,7 @@ LAYOUT ELEMENTS
   width: 6rem;
 }
 
-.quiz-environments {
+.quiz-environments, .tone-freqs {
   margin-top: 1rem;
 }
 
@@ -299,11 +299,11 @@ OBJECT ELEMENTS
   font-weight: 700;
 }
 
-.environments-intro {
+.environments-intro, .tones-intro {
   font-size: 1.2em;
 }
 
-.environment {
+.environment, .missed-tone {
   font-size: 1em;
 }
 
@@ -555,11 +555,11 @@ RESPONSIVE STYLES
     width: 6rem;
   }
 
-  .environments-intro {
+  .environments-intro, .tones-intro {
     margin: 3rem 0 1rem 0;
   }
 
-  .environment { 
+  .environment, .missed-tone { 
     margin: 1rem 0;
   }
 }
@@ -639,11 +639,11 @@ RESPONSIVE STYLES
     width: 6rem;
   }
 
-  .environments-intro {
+  .environments-intro, .tones-intro {
     margin: 1rem 0 1rem 0;
   }
 
-  .environment {
+  .environment, .missed-tone {
     margin: 1rem 0;
   }
 }
